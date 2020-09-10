@@ -1,0 +1,94 @@
+# Group Clients
+<a name="client"></a>
+
+A `client` is an OAuth model containing an ID and Secret which has permission to access the Fresco API. Client objects are used to produce authenticated API requests specified in the [authentication](#authentication) section of this documentation and are always the initial origin of any authenticated request. You can manage your clients through the tool found in your [outlet's settings page](https://fresconews.com/outlet/settings). Clients specify a scope of permission, general tag, and are always tied to a specific version of Fresco's API.
+
+# GET /client/list
+
+Lists all the clients available to the authenticated user
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + last (string, optional) - Last client ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `last_used_at, created_at` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+
++ Response 200 (application/json)
+
+    + Attributes (Clients)
+
+# POST /client/generate
+
+Generates a new set of client credentials. This is used by outlets to generate new OAuth2 clients.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + api_version_id (number, required)
+    + scope: `public`, `private` (string, required)
+    + tag (string, optional)
+    + enabled: true (boolean)
+    + redirect_uri (string, optional) - If you plan to support user level OAuth support with Fresco, make sure to set a redirect URI for your application
+
++ Response 200 (application/json)
+
+    + Attributes (Client)
+
+
+# POST /client/{id}/update
+
+Update an existing set of client credentials.
+
+**Note**: Rekeying a client Secret will **destroy all access tokens** associated with the client.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + api_version_id (number, optional)
+    + scope: `public, private` (string, optional)
+    + tag (string|null, optional)
+    + enabled (boolean, optional)
+    + redirect_uri (string, optional) - If you plan to support user level OAuth support with Fresco, make sure to set a redirect URI for your application
+    + rekey (boolean, optional) - If true, sets the client secret to a new random value
+
++ Response 200 (application/json)
+
+    + Attributes (Client)
+
+
+# POST /client/{id}/delete
+
+Delete a set of client credentials.
+
+**Note**: Deleting a client secret will **destroy all access tokens** previously associated with the client.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Body
+
+        { 
+            "result": "ok" 
+        }

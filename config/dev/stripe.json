@@ -1,0 +1,5 @@
+{
+    "STRIPE": {
+        "SECRET_KEY": "sk_test_GfGzdRrfEEg7oL3BAnbCjLW7"
+    }
+}

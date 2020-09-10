@@ -1,0 +1,79 @@
+# Group Story
+<a name="story"></a>
+
+A `story` is a collection of [galleries](#gallery) curated by Fresco's content team. Stories often deal with ongoing events. When requesting a story, thumbnails are passed which are derived from the [posts](#posts) that are part of the galleries within a particular story.
+
+# GET /story/{id}
+
+Retrieve a single story by its unique ID.
+
++ Parameters
+    
+    + id (string, optional) - ID of the story
+
++ Headers
+
+    Authorization: Bearer {token} (optional)
+    
++ Response 200 (application/json)
+
+    + Attributes (Story)
+
+
+# GET /story/{id}/galleries
+
+Lists galleries for a passed story.
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating (number, optional) - Rating to filter by
+
++ Response 200 (application/json)
+
+    + Attributes (Galleries)
+
+# GET /story/{id}/posts
+
+Lists posts inside a passed story.
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating: 0, 1, 2 (number, optional) - Rating to filter by
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# GET /story/recent
+
+Retrieves a list of recent stories
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + created_before (string, optional) - Datetime
+    + created_after (string, optional) - Datetime
+    + updated_before (string, optional) - Datetime
+    + updated_after (string, optional) - Datetime
+    + geo (object, optional) - GeoJSON
+    + geo_where:  (string, optional) - `intersects, contains, contained`
+    + radius (number, optional)
+
++ Headers
+
+    Authorization: Bearer {token} (optional)
+    
++ Response 200 (application/json)
+
+    + Attributes (Stories)

@@ -1,0 +1,51 @@
+# Data Structures
+
+## Role Base (object)
++ id: `Ql7a0Zd32bGO` (string) - Unique ID of the role
++ object: `role` (string)
++ tag: `read, write, public` (string)
++ name: `Read and Write Token` (string)
+
+## Role (Role Base)
+
+## Client Base (object)
++ object: `client` (string)
++ id (string)
++ client_id (string)
++ outlet_id (string)
++ tag (string)
++ redirect_uri (string)
++ enabled (boolean)
++ role ([Role][])
++ api_version (Api Version)
++ last_used_at (string) - `Null` if unused, else ISODate string of the last time this client or any of its bearers were used
++ created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
+
+## Client (Client Base);
+
+## Clients (array[Client])
+
+## Auth Code Base (object)
++ object: `authorization_code` (string)
++ user_id (string)
++ token (string)
++ redirect_uri (string)
++ state (string) - Optional, random string set by client for checking validity of the user's session in the authorization process. Should be set when requesting access via the authorization grant, and verified when exchanging the authorization code for an access token. 
++ role([Role][])
+
+## Auth Code (Auth Code Base)
+
+## Token Base (object)
++ access_token (object)
+    + token: 123abc3456def789ghi101jkl234mno567pqr8910 (string)
+    + refresh_token: y59NDvCfAth4XBikaGB4sHnatqYnVLRlR7 (string)
+    + client ([Client][])
+    + role ([Role][])
+    + expires_in (number) - MS until token expires
+    + expires_at: `2017-02-08T17:42:43.498Z` (string) - ISODate
+    + created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
+    + object: `access_token` (string)
++ token_type: Bearer (string) - Type of token
+
+## Token (Token Base)
+

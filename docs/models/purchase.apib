@@ -1,0 +1,22 @@
+# Data Structures
+
+## PurchaseBase (object)
++ object: purchase (string)
++ id (string)
++ assignment_id (string) - Assignment the purchase was made in
++ outlet_id (string) - Outlet that made the purchase
++ post_id (string) - Post that was purchased
++ user_id (string) - Who purchased the item
++ amount (number) - In US cents
++ charge_status (string)
++ created_at (string) - ISO Date
+
+## Purchase Preview (PurchaseBase)
+
+## Purchase (PurchaseBase)
++ user ([User Preview][])
++ outlet ([Outlet Preview][])
++ post ([Post][])
++ assignment ([Assignment Preview][])
+
+## Purchases (array[Purchase])

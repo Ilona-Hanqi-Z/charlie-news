@@ -1,0 +1,169 @@
+# Group Authentication
+<a name="authentication"></a>
+
+Fresco uses [OAuth2](https://oauth.net/2/) for authorizing access to its API resources. Applications that wish to integrate with the Fresco API
+must do so using active OAuth2 client credentials issued from Fresco's API. Client credentials form the authentication for all initial requests and are used in order to obtain access to other API resources that fall out of the client permission scope, such as the user scope (requests on behalf of a user) or the outlet scope (requests on behalf of an outlet). All clients possess an `ID` and `Secret` that are used to identify the client making a request.
+
+These two forms of authentication fall under two groups, [Basic](#basic) and [Bearer](#bearer). See the corresponding sections to understand how and when to use the appropriate authentication method.
+
+### Third Parties
+Client credentials for third parties are issued in relation to an existing [outlet](#outlet) inside of Fresco's web platform. You'll find the tool to generate client IDs and Secrets in your [outlet's settings page](https://fresconews.com/outlet/settings).
+
+**Note:** This tool will only be visible to the owner of the outlet
+
+## Basic Authentication
+<a name="basic"></a>
+
+This method of authentication is used by a client for basic access to Fresco's API. The extent of these requests falls to authentication handshakes to exchange credentials for an access token with which subsequent requests can be made. Since client credentials allow you to act on behalf of a client and require both your ID and Secret in the request to be identified, we recommended using Basic authentication only for generating access tokens.
+
+Requests made with `Basic` authentication combine the client ID and Secret, colon separated, with a Base64 encoding and should be sent in the `Authorization` header. See the example.
+
+Example: `Authorization: Basic {Base64({Client ID}:{Client Secret})}`
+
+#### URL Authentication
+<a name="urlbasic"></a>
+
+In addition to sending the client ID and Secret in the `Authorization` header, it can also be sent in the URL using the `auth_client` parameter. This method is not recommended, as it is less secure than sending the information in the header.
+
+Example: `https://www.fresconews.com/v2/mrss/get?auth_client={Base64({Client ID}:{Client Secret})}`
+
+## Bearer Authentication
+<a name="bearer"></a>
+
+Bearer authentication can be used once a valid access token has been obtained, typically by exchanging client credentials for the necessary token. Bearer-level authentication is normally used to make requests on behalf of a user or outlet.
+
+Example: `Authorization: Bearer {Bearer Access Token}`
+
+## Authentication Strategies
+
+Below you will find the different types of authentication strategies that Fresco supports to obtain access tokens, all of which fall into the `/auth/token` route. The common parameter used to differentiate the authentication strategy is the `grant_type` field.
+
+# POST /auth/token - Client Credentials
+<a name="client_credentials"></a>
+
+Client credentials may be exchanged for a renewable access token which can be used to provide `Basic` API access without potentially exposing the client's Secret with each subsequent request. Using this strategy will supply you with an access token representing your client with a related refresh token. As an integrating application, make sure to hold onto this refresh token to obtain a new access token once the new one expires. See the refresh strategy for instructions on how to do this.
+
+**Note:** Only requests using `Basic` authentication may generate access tokens. If you wish to generate a new `client_credentials` token,
+or if you wish to refresh an existing one, please do so with your Client ID and Secret, and not with an access token.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+
+    + `grant_type` (string, required) - `client_credentials`
+
++ Response 200 (application/json)
+
+    + Attributes (Token)
+
+# POST /auth/token - Password
+<a name="password"></a>
+
+Generates an access token representing a user with the provided credentials. This method is for **first parties only**; third parties will be un-authorized when trying to access this strategy. To support user-level access for your third party, see the user authorization strategy.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+
+    + `grant_type` (string, required) - `password`
+    + scope: `read, write` (string)
+        + Default: `read`
+    + username: `lukeskywalker` (string, required)
+    + password: `anunsecurepassword` (string, required)
+
++ Response 200 (application/json)
+
+    + Attributes (Token)
+
+
+# POST /auth/token - Refresh Token
+<a name="refresh_token"></a>
+
+After an access token expires, requests using this token will begin to return a status code of `401 Unauthorized`. If you were given a
+refresh token upon generating the expired access token, the access token can be renewed using the refresh token. If your access token
+did not include a refresh token, the expired access token must be refreshed by repeating the authentication process used to generate it.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+
+    + `grant_type` (string, required) - `refresh_token`
+    + refresh_token: `y59NDvCfAth4XBikaGB4sHnatqYnVLRlR7` (string, required)
+
++ Response 200 (application/json)
+
+    + Attributes (Token)
+
+
+# POST /auth/token - Authorization Code
+<a name="authorization_code"></a>
+
+This endpoint allows for the exchange of an authorization code for an access token with permissions to access the granted
+resource. An authorization code is typically obtained when doing a physical handshake with Fresco to authenticate a Fresco user.
+See the section on [building a log in flow](#login_flow) for instruction on how to do this.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+
+    + `grant_type` (string, required) - `authorization_code`
+    + code (string, required) - '01fj1093j0192jd01j091jca09asdj0as9j090asdasd'
+
++ Response 200 (application/json)
+
+    + Attributes (Token)
+
+# DELETE /auth/token
+
+## Destroying an Access Token
+
+Access tokens can be destroyed by using it to make a request to this endpoint. If access tokens are not destroyed, they
+will be usable until they expire, and will remain refreshable indefinitely. As such, it is advised to always destroy your
+access tokens when they are no longer necessary. i.e. logging out, de-activating an account.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer [Access Token]
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + result: ok (string)
+
+# POST /auth/signin  (DEPRECATED)
+
+Endpoint for signing in an existing user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+            Authorization: Bearer {Client}
+
++ Parameters
+
+    + username (string, required) - Username or email
+    + password (string, required) - User's plaintext password
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)

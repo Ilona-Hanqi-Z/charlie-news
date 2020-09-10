@@ -1,0 +1,61 @@
+# Data Structures
+
+## Gallery Base (object)
++ object: gallery (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Gallery Preview (Gallery Base)
++ owner_id (string) - User who submitted the gallery, empty if an import
++ caption (string)
++ address (string) - Formatted address of gallery
++ external_id (string) - ID of the external source this gallery was imported from
++ external_url (string) - URL of the external source
++ external_account_id (string) - ID of the account whose content this was imported from
++ external_account_username (string) - Userame of the account whose content this was imported from
++ external_account_name (string) - Name of the owner of the account whose content this was imported from
++ external_source (string)
++ is_nsfw (boolean) - If the gallery has been marked as NSFW
++ created_at (string) - ISO Date
++ updated_at (string) - ISO Date
+
+## Gallery (Gallery Preview) <!-- Public Gallery -->
++ owner ([User][])
++ curator_id (string) - Last editor of the gallery
++ curator ([User Preview][])
++ posts ([Posts][])
++ stories ([Story Previews][])
++ articles ([Articles][])
++ assignments ([Assignment Previews][])
++ tags (array) - Array of text tags
++ location ([GeoJSON MultiPoint][]) - GeoJSON Multipoint based on child posts
++ rating: 0, 1, 2 (number)
++ photo_count (number) - # of photos in the gallery
++ video_count (number) - # of vidoes in the gallery
++ likes (number) - # of likes
++ reposts (number) - # of reposts
++ comments (number) - # of comments
++ liked (boolean) - Liked state for authenticated user
++ reposted (boolean) - Reposted state for authenticated user
++ highlighted_at (string|null) - ISO Date, if highlighted_at <= now: gallery is highlighted, else gallery is not
+
+## Galleries (array[Gallery])
+
+## Like
++ id: 6DrY8Kjr3KBP (string) - ID of the like
++ object: like (string)
++ gallery_id: 7ewm8YP3GL5x (string) - ID of the gallery liked
++ user_id (string) - ID of the user who liked the gallery
++ created_at (string) - ISO Date
++ user ([User Preview][])
+
+## Likes (array[Like])
+
+## Repost
++ id: 6DrY8Kjr3KBP (string) - ID of the like
++ object: repost (string)
++ gallery_id: 7ewm8YP3GL5x (string) - ID of the gallery liked
++ user_id (string) - ID of the user who liked the gallery
++ created_at (string) - ISO Date
++ user ([User Preview][])
+
+## Reposts (array[Repost])

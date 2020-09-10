@@ -1,0 +1,16 @@
+{
+    "JWT": {
+        "Google": {
+            "type": "service_account",
+            "project_id": "fresco-news-debug",
+            "private_key_id": "465ab9110fd1cb7c18f77c8d49322c1602669949",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCgCSV1gGMFLZak\nTPlgjTAcelwpBL6HQ/xlTqQ5LwOcqSHLu3OPeahbNiNEg5j+HmappyBeQuNxFuXP\nLv1tFAYQFdVFYh5EEILLm6BCqm88rbf4tbIzB30cUqr/FvP0ozn51FiX5K99TDgt\nSh6Nc0UIsA/9bPGxzEgLHcf7gWbl82UTW0FIF6NyR9CdivDFcu/57lG9lScKgctW\njTZfCD7VLpbHKucrCkBFy5biexREaKolO90Wn7A4nXWs63XAPx0U7lJK2cVYU2wF\nbY/64BvhYq5hsH0s6u0chGMIwOwAhtZDzbt2/8+ms9wlW6hxoQnqnaxKS4UOrZ6u\nUNt8b7RlAgMBAAECggEAcD9aDbtaOJSMN3th4m3FFARixcZ1GIz/59Kr7wvhva0H\nbk1xNW4APtGPFQw0b/DE0zPMyTCjNHv5/kKYMDy+L+QQbZTvY5AtHUBvvLKsSOQT\nyJcwgQg8oXP+SeNAgxNFo8xjw038JKckM+fr3AzAm+JZpMgYEjwVP+7IiMhvctMT\n3DLoT4xwO7lnenAkt0CfxdOuviqgzCpvi/6AQPSK0pXROS/PBDZf6Q9byZoXGJP8\nf1tnB0J3Slq56C7R8GfM+/A7w6eku67Ayty+mcGeOnsKxowzsbmsa/UxGuGXUt+P\nH8b3Huer7NShTpkzgVp71EYIEKVeTHvFeltGlHLEgQKBgQDMDunqVyRc2xzsmDZ7\n9cU20KLzPlUlJKcqHqQ5qs1kfxXIITZweYZsrTR72d+wvh3Ce9ckWmu86wx8yYEW\ndOZU8ECICbVdnVYteCt6xGTREvORlJGM3cfEvPyGkmlQ4NfqOiD+pHjpuxvIF50z\nekNzqkwKJbTI2DwrjT9d0Jh0BQKBgQDIxZWWN1ApCKXYvnmUblf1D63XPQqJoFUN\nxWa4y8tbxQmh1p5YhPE+gunTcnp4iJNVBbyzr47dX1fXfu/y+jojSO7oLa/KDwJd\niRQHSXiuKolCLyDDmZLJQ6L9DB3ir4DXpaPa8mxIp3DFIvzZJGX2RXoMGVeXfuSF\nYPccIjOM4QKBgG3TxRBMkJStlda9Ye277MZA6sMylE8meBZSYZ9sD5n8UHPjdFJ7\nBd+uJWZXcG7HFGtdjgDR7dTDSXhMV/8HMgUbPhA58XSOPxi/6d7snzpsEc4UAXao\n02FPOjcPzEEskulNGf8T9MQP4bcDBqfzMSSqzrxTaQcEYvYp0qYipDslAoGASMXt\nqaxU/vqmesDX+uhgM3DCd3Elv6sBCWPTDwq3pITwL9xGOxm9BAaZ0M3+/G+sz7Wr\np4nsA+vKQE8/lFgE+MM37aqZvGjiV5sXSmjkOGUsqXPBsYSaAx/kFUruDjvFPOVK\nVlNm0pL2uk4rTl32I2UdjwMkj8Ir/PifuW/gNaECgYA/uNnstqjCqJf6olHS2Sd5\nwjyoGlOErfmPVwwFELIlOEZXdrCgC3iX6Ki4AoqykhHSyE6xjA/5b1CFc9cyH7HS\nmKAwvzh/7/WSBiu33f1RZ+uIwNdHSlVw4U0Y0LZOiVptvQoF4iOHwUV0MnaTT0+7\n40ibY6vVf7K+JZTy1fgTIg==\n-----END PRIVATE KEY-----\n",
+            "client_email": "fresco-dev@fresco-news-debug.iam.gserviceaccount.com",
+            "client_id": "111302554132262897231",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://accounts.google.com/o/oauth2/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fresco-dev%40fresco-news-debug.iam.gserviceaccount.com"
+        }
+    }
+}

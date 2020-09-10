@@ -1,0 +1,10 @@
+\i ./indices/assignments.sql
+\i ./indices/auth.sql
+\i ./indices/galleries.sql
+\i ./indices/installations.sql
+\i ./indices/notifications.sql
+\i ./indices/outlets.sql
+\i ./indices/posts.sql
+\i ./indices/purchases.sql
+\i ./indices/stories.sql
+\i ./indices/users.sql

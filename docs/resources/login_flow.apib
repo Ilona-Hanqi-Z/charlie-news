@@ -1,0 +1,43 @@
+# Group Building a login flow
+<a name="login_flow"></a>
+
+If you'd like to make requests on behalf a user, this will require interacting with Fresco's site to build a login flow for your app. Once successfully authenticating a user through Fresco, you're free to build most of the same functionality that Fresco offers through its internal site. 
+
+![name](https://s3.amazonaws.com/com.fresconews.v2.prod/static/images/oauth_form.png)
+
+Below are the steps to build your login flow.
+
+## Logging people in
+
+Depending on if someone is currenty logged in or not to Fresco, you can use our login dialog to have users perform either action. Our login form will detect if a user is not logged in and prompt to do so. In order to initiate the login flow, your app must perform a redirect to the following endpoint:
+
+<code>
+https://fresconews.com/oauth?
+    <br>client_id={client-id}
+    <br>&redirect_uri={redirect-uri}
+    <br>&scope={read||write}
+</code>
+
+The endpoint has the required paramters:
+- `client_id` The ID of your client that will requesting authentication
+- `redirect_uri` The valid redirect URI associated with your client
+- `scope` The scope of permission on the user that is being asked for. Further explained below.
+
+All of the mentioned parameters can be obtained from your valid OAuth client in the client management tool found inside of Fresco. The `scope` parameter will affect what your token is permitted to access. If you wish to make changes or send requests which involve the creation of other resources, pass `write` as your scope. Otherwise, you can pass `read` and the bearer you'll be able to generate will only be permitted to read information from the user's accessible resources.
+
+## Handling Login Responses
+
+When a user is prompted with the login form they will have the option to either cancel or approve your application's request to have permissions to act on behalf of their user. If the user cancels, they'll be redirected with the follow URL:
+
+<code>your_redirect_uri?
+<br>status=denied.
+</code>
+
+In the user approves, they'll be re-directed to your app with this URI:
+
+<code>your_redirect_uri?
+<br>status=granted
+<br>&access_token=123abc456def789ghi.
+</code>
+
+The access token provided can be used to request a valid bearer representing the user. See the [authorization code](#authorization_code) strategy on how to exchange this code for a valid bearer.

@@ -1,0 +1,7 @@
+{
+    "ZOHO": {
+        "API_KEY": "41eeeec7111df5498c4301f495ba0302",
+        "WEBHOOK_KEY": "bB0ljRLm9abuTfRcEhJKFxIKvytfOcx2nHoJuMFd",
+        "CREATE_LEAD": "https://crm.zoho.com/crm/private/xml/Leads/insertRecords?newFormat=1&authtoken=41eeeec7111df5498c4301f495ba0302&scope=crmapi"
+    }
+}

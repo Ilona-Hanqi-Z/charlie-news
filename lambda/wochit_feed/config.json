@@ -1,0 +1,26 @@
+{
+    "lastPostId": null,
+    "maxContentCount": 32,
+    "intervalSeconds": 300,
+    "captionMaxLength": 50,
+
+    "fresco": {
+        "apiRoot": "https://api.fresconews.com/v2",
+
+        "client": {
+            "id": "3GI8mJTaPmkimyXCOOMRfGIULAIjQUn8",
+            "secret": "1wkFMjETSXGnyIN7OBrlsN0tRtxzvWjpujP6DuHIGh1a403zHaB56th9WGzK2YGi"
+        },
+        "accessToken": null
+    },
+    "wochit": {
+        "apiRoot": "https://ingest-api.wochit.com/api/v1",
+        "apiKey": "NMfbOZdQbL60XQGYq6Pbd7pkPAT6Hhv14yUJ3Unu",
+
+        "client": {
+            "id": "6fa78c4e-90f8-4637-9b01-884c6f20eba0",
+            "secret": "ZnQ5NDg4ZjExbnMyY2FpbGc2ajY5amFzMHB2Nmg2bXNmcWhyb2ljYXJvOTdycjQwcmk="
+        },
+        "accessToken": null
+    }
+}

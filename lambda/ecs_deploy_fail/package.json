@@ -1,0 +1,13 @@
+{
+  "name": "fresco-lambda-ecs-deploy-fail",
+  "version": "1.0.0",
+  "description": "Send messages to slack on failed deployments",
+  "main": "index.js",
+  "scripts": { },
+  "author": "Ryan McVeety",
+  "license": "Proprietary",
+  "dependencies": {
+    "aws-sdk": "^2.3.7",
+    "superagent": "^2.3.0"
+  }
+}

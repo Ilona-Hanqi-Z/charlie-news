@@ -1,0 +1,2306 @@
+FORMAT: 1A
+HOST: https://api.fresconews.com/v2
+
+# Fresco
+
+The Fresco API provides programmatic access to read and write Fresco data. You can use this API to create a new gallery, read a user profile, retrieve active assignments, and much more. The REST API identifies Fresco applications and users using OAuth; all responses are available in JSON.
+
+## Requests
+
+Both `GET` and `POST` requests are sent with `application/x-www-form-urlencoded` parameters.
+## Errors
+
+Fresco uses traditional HTTP response codes to reflect the success of a specific call. In most cases, response codes in the `2xx` range are considered successful, and response codes in the `4xx` range indicate an error and will provide information to resolve the cause of failure. Response codes in the `5xx` range indicate an error on Fresco servers. Should you find that you're unable to resolve an issue, our API team is available to contact via [api@fresconews.com](mailto:api@fresconews.com)
+
+## Unique Identifiers
+
+All Fresco objects (galleries, posts, assignments, etc.) have unique identifiers that are usually found in the `id` field. Use this ID to find the object you seek or to keep track of the specific entity for later use. 
+
+## Pagination
+
+Most high-level resources have support for pagination allowing you to easily list different types of objects 
+such as [posts](#list-posts), [purchases](#list-posts), and [stories](#list-stories). 
+
+Pagination is utilized via the `last`, `direction`, and `sortBy` parameters. The `sortBy` parameter specifies the field by which to sort objects (e.g. `time_created`, `time_updated`). The `direction` field specifies the ordering. The `last` parameter takes an object's unique ID as the object to paginate from. To achieve a chronological ordering you can sort by a date field such as `time_created` and pass `asc` as the direction.
+
+## GeoJSON
+
+Fresco's API makes heavy use of location data for many of its objects. All of our location data is formatted in standard `GeoJSON` as you'll see in request parameters. Refer to the most recent [GeoJSON](https://tools.ietf.org/html/rfc7946) specifications for help with correct formatting.
+
+There are 4 types of geospatial queries: within, intersects, contained and contains. `within` checks for results withing `radius` meters of the geo query. `intersects` checks for results which intersect the geo query. `contains` checks for results that the geo query contains entirely. `contained` checks for results which completely contain the geo query.
+These options are available wherever you can provide a geospatial query, under the parameter `where` (e.g. ?where=contains&...).
+
+## Tokens and Authentication
+
+Tokens and Client IDs are provided on an outlet or user basis. You can generate a client ID & Secret for your account by visiting your 
+[outlet settings](https://fresconews.com/outlet/settings) page. Endpoints will specify the need for a `basic` or `bearer` 
+token depending on the scope of the respective endpoint. Read more in the [authentication](#authentication) section of the documentation.
+
+# Data Structures
+
+## Api Version (object)
++ object: `api_version` (string)
++ id (string)
++ version_major (number)
++ version_minor (number)
++ is_lts (boolean) - Flags versions that will be supported long-term
++ deployed_at (string) ISODate
++ deprecated_at (string) - ISODate: If set, support for this API version sill be dropped after the given date, and all clients will use the next recent version.
+# Data Structures
+
+## Article Base (object)
++ object: `article` (string)
++ id (string)
++ title (string)
++ favicon (string)
++ link (string) - URL of the article
++ created_at (string) - ISODate
+
+## Article (Article Base)
+
+## Articles (array[Article])
+# Data Structures
+
+## Assignment Base (object)
++ object: "assignment" (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Assignment Preview (Assignment Base)
++ title: Waikiki Beach (string)
++ caption: Fresco News is looking for a steady shots and photos of Waikiki Beach during sunrise and sunset. You will be notified if your content is downloaded by one of our news organization partners. (string, required) - Text description of the assignment
++ address: Waikiki, Honolulu, HI, USA (string) -  Formatted address
++ starts_at (string) - Start time (ISODate)
++ ends_at (string) - Expiration time (ISODate)
+
+## Assignment (Assignment Preview) <!-- Assignment Public -->
++ curator_id (string) - User who last edited the assignment
++ curator ([User Preview][])
++ thumbnails ([Thumbnails][])
++ outlets ([array[Outlet Preview]][]) - Outlets part of the assignment
++ location ([GeoJSON Polygon][]) - GeoJSON Polygon
++ radius (number) - Radial buffer of GeoJSON location
++ rating (number)
++ photo_count (number) - # of photos submitted
++ video_count (number) - # of videos submitted
++ accepted_count (number)
++ accepted (boolean)
++ created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
++ updated_at (string) - ISODate
++ curated_at (string) - Time the assignmned was edited (ISODate)
+
+## Assignments (array[Assignment])
+
+## Assignment Previews (array[Assignment Preview])
+# Data Structures
+
+## Gallery Base (object)
++ object: gallery (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Gallery Preview (Gallery Base)
++ owner_id (string) - User who submitted the gallery, empty if an import
++ caption (string)
++ address (string) - Formatted address of gallery
++ external_id (string) - ID of the external source this gallery was imported from
++ external_url (string) - URL of the external source
++ external_account_id (string) - ID of the account whose content this was imported from
++ external_account_username (string) - Userame of the account whose content this was imported from
++ external_account_name (string) - Name of the owner of the account whose content this was imported from
++ external_source (string)
++ is_nsfw (boolean) - If the gallery has been marked as NSFW
++ created_at (string) - ISO Date
++ updated_at (string) - ISO Date
+
+## Gallery (Gallery Preview) <!-- Public Gallery -->
++ owner ([User][])
++ curator_id (string) - Last editor of the gallery
++ curator ([User Preview][])
++ posts ([Posts][])
++ stories ([Story Previews][])
++ articles ([Articles][])
++ assignments ([Assignment Previews][])
++ tags (array) - Array of text tags
++ location ([GeoJSON MultiPoint][]) - GeoJSON Multipoint based on child posts
++ rating: 0, 1, 2 (number)
++ photo_count (number) - # of photos in the gallery
++ video_count (number) - # of vidoes in the gallery
++ likes (number) - # of likes
++ reposts (number) - # of reposts
++ comments (number) - # of comments
++ liked (boolean) - Liked state for authenticated user
++ reposted (boolean) - Reposted state for authenticated user
++ highlighted_at (string|null) - ISO Date, if highlighted_at <= now: gallery is highlighted, else gallery is not
+
+## Galleries (array[Gallery])
+
+## Like
++ id: 6DrY8Kjr3KBP (string) - ID of the like
++ object: like (string)
++ gallery_id: 7ewm8YP3GL5x (string) - ID of the gallery liked
++ user_id (string) - ID of the user who liked the gallery
++ created_at (string) - ISO Date
++ user ([User Preview][])
+
+## Likes (array[Like])
+
+## Repost
++ id: 6DrY8Kjr3KBP (string) - ID of the like
++ object: repost (string)
++ gallery_id: 7ewm8YP3GL5x (string) - ID of the gallery liked
++ user_id (string) - ID of the user who liked the gallery
++ created_at (string) - ISO Date
++ user ([User Preview][])
+
+## Reposts (array[Repost])
+# Data Structures
+
+## GeoJSON Point (object)
++ type: Point (string)
++ coordinates: 40.703908, 74.011390 (array)
+
+## GeoJSON Polygon (object)
++ type: Polygon (string)
++ coordinates (array)
+    + (array)
+        + ([GeoJSON Coordinate][])
+        + ([GeoJSON Coordinate][])
+        + ([GeoJSON Coordinate][])
+
+## GeoJSON MultiPoint (object)
++ type: MultiPoint (string)
++ coordinates (array)
+    + ([GeoJSON Coordinate][])
+    + ([GeoJSON Coordinate][])
+
+## GeoJSON Coordinate (array)
++ `40.703908` (number)
++ `-74.011390` (number)
+# Data Structures
+
+## Role Base (object)
++ id: `Ql7a0Zd32bGO` (string) - Unique ID of the role
++ object: `role` (string)
++ tag: `read, write, public` (string)
++ name: `Read and Write Token` (string)
+
+## Role (Role Base)
+
+## Client Base (object)
++ object: `client` (string)
++ id (string)
++ client_id (string)
++ outlet_id (string)
++ tag (string)
++ redirect_uri (string)
++ enabled (boolean)
++ role ([Role][])
++ api_version (Api Version)
++ last_used_at (string) - `Null` if unused, else ISODate string of the last time this client or any of its bearers were used
++ created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
+
+## Client (Client Base);
+
+## Clients (array[Client])
+
+## Auth Code Base (object)
++ object: `authorization_code` (string)
++ user_id (string)
++ token (string)
++ redirect_uri (string)
++ state (string) - Optional, random string set by client for checking validity of the user's session in the authorization process. Should be set when requesting access via the authorization grant, and verified when exchanging the authorization code for an access token. 
++ role([Role][])
+
+## Auth Code (Auth Code Base)
+
+## Token Base (object)
++ access_token (object)
+    + token: 123abc3456def789ghi101jkl234mno567pqr8910 (string)
+    + refresh_token: y59NDvCfAth4XBikaGB4sHnatqYnVLRlR7 (string)
+    + client ([Client][])
+    + role ([Role][])
+    + expires_in (number) - MS until token expires
+    + expires_at: `2017-02-08T17:42:43.498Z` (string) - ISODate
+    + created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
+    + object: `access_token` (string)
++ token_type: Bearer (string) - Type of token
+
+## Token (Token Base)
+
+
+# Data Structures
+
+## Outlet Base (object)
++ object: outlet (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Outlet Preview (Outlet Base)
++ title: Fresco News (string) - Main title of outlet, unique field
++ avatar (string) - Avatar URL
+
+## Outlet (Outlet Base) <!-- public -->
++ bio (string) - Optional bio field for an outlet
++ link (string) - Web link for the outlet
++ owner_id (string) - Owner of the outlet
+
+## Outlet Self (Outlet)
++ dispatch_enabled (boolean)
++ created_at (string) - ISODate
++ verified (boolean) - Verified state of the outlet
++ owner ([User Preview][])
++ goal (number) - For admins, the outlet's goal
+
+## Outlets (array[Outlet])
+
+## Outlet Location Base (object)
++ outlet_id: 7ewm8YP3GL5x (string)
++ user_id: 7ewm8YP3GL5x (string)
++ title: New York (string)
++ location ([GeoJSON Polygon][]) - GeoJSON
++ created_at (number) - Datetime
++ send_email_default (boolean) - Default setting for email medium
++ send_sms_default (boolean) - Default setting for sms medium
++ send_fresco_default (boolean) - Default setting for fresco medium
++ send_push_default (boolean) - Default setting for push medium
+
+## Outlet Location (Outlet Location Base)
+
+## Outlet Locations (array[Outlet Location])
+
+## Outlet Statistic (object)
++ outlet_id: 7ewm8YP3GL5x (string)
++ purchase_count: 0 (number) - Number of purchases this outlet has made
++ photo_count: 0 (number) - Number of photos purchased
++ video_count: 0 (number) - Number of videos purchased
++ assignment_count: 0 (number) - Number of assignments this outlet has been a part of
+
+## Outlet Statistics (array[Outlet Statistic])
+
+# Data Structures
+
+## Post Base (object)
++ id (string)
++ object: post (string) - post
+
+## Post (Post Base)
++ parent_id (string) - ID of the parent gallery
++ parent ([Gallery Preview][])
++ owner_id (string) - ID of the post's owner
++ owner  ([User][])
++ curator_id (string) - ID of the post's curator
++ curator ([User Preview][])
++ image (string) - Image URL of the post
++ stream (string) - m3u8 URL of the post, null if not a video
++ license (number)
++ location ([GeoJSON Point][]) - GeoJSON point of the post
++ address (string) - Formatted address
++ width (number) - Width of the image/video
++ height (number) - Height of the image/video
++ duration (number) - Duration of video in seconds
++ status (number) - Transcoding status of the post's media
++ rating: 0, 1, 2 (number)
++ is_nsfw (boolean) - If the post is marked as NSFW
++ purchased (number) - Boolean value of purchased state
++ created_at (string) - Creation timestamp of the post
++ captured_at (string) - Timestamp of when the media was captured
++ updated_at (string) - Timestamp of when the post was last updated
++ purchases ([Post Purchases][]) - A record of the outlets that have purchased this post
+
+## Posts (array[Post])
+
+## Post Purchase
++ id (string) - id of the purchase
++ outlet ([Outlet Preview][])
++ amount (number) - In US cents
+
+## Post Purchases (array[Post Purchase])
+
+## Thumbnail (Post Base)
++ image (string)
++ stream (string)
++ width (number) - Width of the image/video
++ height (number) - Height of the image/video
++ duration (number) - Duration of video in seconds
++ is_nsfw (boolean) - If the post is marked as NSFW
+
+## Thumbnails (array[Thumbnail])
+
+## Post Download (object)
++ result: http://fresconews.com/test.mp4?AccessKeyID=H3SH&Expires=1483745649t (string) - URL of the download link
+
+# Data Structures
+
+## PurchaseBase (object)
++ object: purchase (string)
++ id (string)
++ assignment_id (string) - Assignment the purchase was made in
++ outlet_id (string) - Outlet that made the purchase
++ post_id (string) - Post that was purchased
++ user_id (string) - Who purchased the item
++ amount (number) - In US cents
++ charge_status (string)
++ created_at (string) - ISO Date
+
+## Purchase Preview (PurchaseBase)
+
+## Purchase (PurchaseBase)
++ user ([User Preview][])
++ outlet ([Outlet Preview][])
++ post ([Post][])
++ assignment ([Assignment Preview][])
+
+## Purchases (array[Purchase])
+# Data Structures
+
+## Report Base (object)
++ id (string)
++ object: `report`
+
+## Report (Report Base)
++ user_id (string) - The id of the user who made the report
++ user ([User Preview][])
++ reason: `spam, abuse, stolen, graphic` (string) - The reason for the report
++ message (string) - More details about the report
++ created_at (string) - ISODate
++ status (number)
+
+## Reports (array[Report])
+
+# Data Structures
+
+## Search Results (object)
++ posts
+    + count: 1 (number) - Number of total results that match model search in Fresco (not in result)
+    + results ([Posts][]) - Array of post results
++ galleries
+    + count: 1 (number) - Number of total results that match model search in Fresco (not in result)
+    + results ([Galleries][]) - Array of gallery results
++ assignments
+    + count: 1 (number) - Number of total results that match model search in Fresco (not in result)
+    + results ([Assignments][]) - Array of assignment results
++ users
+    + count: 1 (number) - Number of total results that match model search in Fresco (not in result)
+    + results ([Users][]) - Array of user results
++ outlets
+    + count: 1 (number) - Number of total results that match model search in Fresco (not in result)
+    + results ([Outlets][]) - Array of post results
+# Data Structures
+
+## Story Base (object)
++ id (string)
++ object: `story` (string)
+
+## Story Preview (Story Base)
++ title (string)
++ caption (string)
++ created_at (string) - ISODate
++ updated_at (string) - ISODate
+
+## Story (Story Preview) <!-- Public -->
++ tags (array[string])
++ curator_id - Last user to edit the story
++ thumbnails ([Thumbnails][])
++ articles ([Articles][])
++ curator ([User Preview][])
++ location ([GeoJSON Polygon][]) - GeoJSON
++ gallery_count (number) - Number of galleries in the story
++ photo_count (number) - Number of photos in the story
++ video_count (number) - Number of videos in the story
++ likes (number) - Number of likes
++ reposts (number) - Number of reposts
++ comments (number) - Number of comments
++ liked (boolean) - Authenticated requests only
++ reposted (boolean) -  Authenticated requests only
+
+## Stories (array[Story])
+
+## Story Previews (array[Story Preview])
+# Data Structures
+
+## User Base (object)
++ object: user - Object type
++ id: 7ewm8YP3GL5x (string) - Unique ID
+
+## User Preview (User Base)
++ username: lskywalker3 (string)
++ full_name: Luke Skywalker (string)
++ avatar: http://goo.gl/WQyk8z (string) - Avatar URL
+
+## User (User Base) <!-- `public` -->
++ location: Alderaan (string) - User's location by string
++ bio: Jedi Master (string) - User's bio
++ twitter_handle: @luke - Twitter handle
++ created_at (string) - ISODAte
++ photo_count (number) - Number of photos submitted
++ video_count (number) - Number of video submitted
++ submission_count (number) - Number of total submissions
++ following_count (number) - Number of people following
++ followed_count (number) - Number of followers
++ following (boolean) Only provided when authenticated
++ blocked: false (boolean) - If true, the returned user has blocked the logged in user
++ blocking: false (boolean) - If true, the returned user has been blocked by the logged in user
+
+## User Self (User)
++ email: luke@star.net (string) - email
++ phone (string)
++ radius (number)
++ charges_enabled (boolean) - Can user receive payments from outlets?
++ transfers_enabled (boolean) - Can user transfer money to active payment method?
++ suspended_until (string) - ISODAte: If set, user is suspended until listed time
++ offense_count (number) - Number of offenses levied against this user
++ permissions (array[string]) - User's permitted actions
++ outlet ([Outlet Preview][])
++ terms
+    + valid (boolean)
+    + version (number)
++ social_links
+    + facebook
+        + account_id (string)
+    + twitter
+        + account_id (string)
++ identity
+    + first_name (string)
+    + last_name (string)
+    + address_line1 (string)
+    + address_line2 (string)
+    + address_city (string)
+    + address_state (string)
+    + address_zip (string)
+    + dob_day (number)
+    + dob_month (number)
+    + dob_year (number)
+    + pid_last4_provided (boolean)
+    + pid_provided (boolean)
+    + document_provided (boolean)
+    + fields_needed (array[string])
+    + due_by (string) - ISODate
+    + disabled_reason (string)
+    + updated_at (string) - ISODate
+
+## Users (array[User])
+
+## UserPayment (object)
++ id (string)
++ user_id (string)
++ stripe_id (string)
++ type (string)
++ brand (string)
++ last4 (string)
++ active (boolean)
++ valid (boolean)
++ created_at (string)
+# Group Authentication
+<a name="authentication"></a>
+
+Fresco uses [OAuth2](https://oauth.net/2/) for authorizing access to its API resources. Applications that wish to integrate with the Fresco API
+must do so using active OAuth2 client credentials issued from Fresco's API. Client credentials form the authentication for all initial requests and are used in order to obtain access to other API resources that fall out of the client permission scope, such as the user scope (requests on behalf of a user) or the outlet scope (requests on behalf of an outlet). All clients possess an `ID` and `Secret` that are used to identify the client making a request. 
+
+These two forms of authentication fall under two groups, [Basic](#basic) and [Bearer](#bearer). See the corresponding sections to understand how and when to use the appropriate authentication method.
+
+### Third Parties
+Client credentials for third parties are issued in relation to an existing [outlet](#outlet) inside of Fresco's web platform. You'll find the tool to generate client IDs and Secrets in your [outlet's settings page](https://fresconews.com/outlet/settings). 
+
+**Note:** This tool will only be visible to the owner of the outlet
+
+## Basic Authentication
+<a name="basic"></a>
+
+This method of authentication is used by a client for basic access to Fresco's API. The extent of these requests falls to authentication handshakes to exchange credentials for an access token with which subsequent requests can be made. Since client credentials allow you to act on behalf of a client and require both your ID and Secret in the request to be identified, we recommended using Basic authentication only for generating access tokens.
+
+Requests made with `Basic` authentication combine the client ID and Secret, colon separated, with a Base64 encoding and should be sent in the `Authorization` header. See the example.
+
+Example: `Authorization: Basic {Base64({Client ID}:{Client Secret})}`
+
+## Bearer Authentication
+<a name="bearer"></a>
+
+Bearer authentication can be used once a valid access token has been obtained, typically by exchanging client credentials for the necessary token. Bearer-level authentication is normally used to make requests on behalf of a user or outlet.
+
+Example: `Authorization: Bearer {Bearer Access Token}`
+
+## Authentication Strategies
+
+Below you will find the different types of authentication strategies that Fresco supports to obtain access tokens, all of which fall into the `/auth/token` route. The common parameter used to differentiate the authentication strategy is the `grant_type` field.
+
+# POST /auth/token - Client Credentials
+<a name="client_credentials"></a>
+
+Client credentials may be exchanged for a renewable access token which can be used to provide `Basic` API access without potentially exposing the client's Secret with each subsequent request. Using this strategy will supply you with an access token representing your client with a related refresh token. As an integrating application, make sure to hold onto this refresh token to obtain a new access token once the new one expires. See the refresh strategy for instructions on how to do this.
+
+**Note:** Only requests using `Basic` authentication may generate access tokens. If you wish to generate a new `client_credentials` token,
+or if you wish to refresh an existing one, please do so with your Client ID and Secret, and not with an access token.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+        
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+    
++ Parameters
+    
+    + `grant_type` (string, required) - `client_credentials`
+
++ Response 200 (application/json)
+    
+    + Attributes (Token)
+
+# POST /auth/token - Password
+<a name="password"></a>
+
+Generates an access token representing a user with the provided credentials. This method is for **first parties only**; third parties will be un-authorized when trying to access this strategy. To support user-level access for your third party, see the user authorization strategy.
+
++ Request (application/x-www-form-urlencoded)
+   
+    + Headers
+        
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+    
++ Parameters
+    
+    + `grant_type` (string, required) - `password`
+    + scope: `read, write` (string)
+        + Default: `read`
+    + username: `lukeskywalker` (string, required)
+    + password: `anunsecurepassword` (string, required)
+
++ Response 200 (application/json)
+
+    + Attributes (Token)
+
+
+# POST /auth/token - Refresh Token
+<a name="refresh_token"></a>
+
+After an access token expires, requests using this token will begin to return a status code of `401 Unauthorized`. If you were given a
+refresh token upon generating the expired access token, the access token can be renewed using the refresh token. If your access token
+did not include a refresh token, the expired access token must be refreshed by repeating the authentication process used to generate it.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+    
+    + `grant_type` (string, required) - `refresh_token`
+    + refresh_token: `y59NDvCfAth4XBikaGB4sHnatqYnVLRlR7` (string, required)
+
++ Response 200 (application/json)
+    
+    + Attributes (Token)
+
+
+# POST /auth/token - Authorization Code
+<a name="authorization_code"></a>
+
+This endpoint allows for the exchange of an authorization code for an access token with permissions to access the granted
+resource. An authorization code is typically obtained when doing a physical handshake with Fresco to authenticate a Fresco user.
+See the section on [building a log in flow](#login_flow) for instruction on how to do this.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic [Base64(Client ID + Client Secret)]
+
++ Parameters
+    
+    + `grant_type` (string, required) - `authorization_code`
+    + code (string, required) - '01fj1093j0192jd01j091jca09asdj0as9j090asdasd'
+
++ Response 200 (application/json)
+    
+    + Attributes (Token)
+
+# DELETE /auth/token
+
+## Destroying an Access Token
+
+Access tokens can be destroyed by using it to make a request to this endpoint. If access tokens are not destroyed, they
+will be usable until they expire, and will remain refreshable indefinitely. As such, it is advised to always destroy your
+access tokens when they are no longer necessary. i.e. logging out, de-activating an account.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+        
+        Authorization: Bearer [Access Token]
+
++ Response 200 (application/json)
+    
+    + Attributes
+
+        + result: ok (string)
+
+# POST /auth/signin  (DEPRECATED)
+
+Endpoint for signing in an existing user.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+            Authorization: Bearer {Client}
+
++ Parameters
+
+    + username (string, required) - Username or email
+    + password (string, required) - User's plaintext password
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# Group Building a login flow
+<a name="login_flow"></a>
+
+If you'd like to make requests on behalf a user, this will require interacting with Fresco's site to build a login flow for your app. Once successfully authenticating a user through Fresco, you're free to build most of the same functionality that Fresco offers through its internal site. 
+
+![name](https://s3.amazonaws.com/com.fresconews.v2.prod/static/images/oauth_form.png)
+
+Below are the steps to build your login flow.
+
+## Logging people in
+
+Depending on if someone is currenty logged in or not to Fresco, you can use our login dialog to have users perform either action. Our login form will detect if a user is not logged in and prompt to do so. In order to initiate the login flow, your app must perform a redirect to the following endpoint:
+
+<code>
+https://fresconews.com/oauth?
+    <br>client_id={client-id}
+    <br>&redirect_uri={redirect-uri}
+    <br>&scope={read||write}
+</code>
+
+The endpoint has the required paramters:
+- `client_id` The ID of your client that will requesting authentication
+- `redirect_uri` The valid redirect URI associated with your client
+- `scope` The scope of permission on the user that is being asked for. Further explained below.
+
+All of the mentioned parameters can be obtained from your valid OAuth client in the client management tool found inside of Fresco. The `scope` parameter will affect what your token is permitted to access. If you wish to make changes or send requests which involve the creation of other resources, pass `write` as your scope. Otherwise, you can pass `read` and the bearer you'll be able to generate will only be permitted to read information from the user's accessible resources.
+
+## Handling Login Responses
+
+When a user is prompted with the login form they will have the option to either cancel or approve your application's request to have permissions to act on behalf of their user. If the user cancels, they'll be redirected with the follow URL:
+
+<code>your_redirect_uri?
+<br>status=denied.
+</code>
+
+In the user approves, they'll be re-directed to your app with this URI:
+
+<code>your_redirect_uri?
+<br>status=granted
+<br>&access_token=123abc456def789ghi.
+</code>
+
+The access token provided can be used to request a valid bearer representing the user. See the [authorization code](#authorization_code) strategy on how to exchange this code for a valid bearer.
+# Group Clients
+<a name="client"></a>
+
+A `client` is an OAuth model containing an ID and Secret which has permission to access the Fresco API. Client objects are used to produce authenticated API requests specified in the [authentication](#authentication) section of this documentation and are always the initial origin of any authenticated request. You can manage your clients through the tool found in your [outlet's settings page](https://fresconews.com/outlet/settings). Clients specify a scope of permission, general tag, and are always tied to a specific version of Fresco's API.
+
+# GET /client/list
+
+Lists all the clients available to the authenticated user
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + last (string, optional) - Last client ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `last_used_at, created_at` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+
++ Response 200 (application/json)
+
+    + Attributes (Clients)
+
+# POST /client/generate
+
+Generates a new set of client credentials. This is used by outlets to generate new OAuth2 clients.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + api_version_id (number, required)
+    + scope: `public`, `private` (string, required)
+    + tag (string, optional)
+    + enabled: true (boolean)
+    + redirect_uri (string, optional) - If you plan to support user level OAuth support with Fresco, make sure to set a redirect URI for your application
+
++ Response 200 (application/json)
+
+    + Attributes (Client)
+
+
+# POST /client/{id}/update
+
+Update an existing set of client credentials.
+
+**Note**: Rekeying a client Secret will **destroy all access tokens** associated with the client.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + api_version_id (number, optional)
+    + scope: `public, private` (string, optional)
+    + tag (string|null, optional)
+    + enabled (boolean, optional)
+    + redirect_uri (string, optional) - If you plan to support user level OAuth support with Fresco, make sure to set a redirect URI for your application
+    + rekey (boolean, optional) - If true, sets the client secret to a new random value
+
++ Response 200 (application/json)
+
+    + Attributes (Client)
+
+
+# POST /client/{id}/delete
+
+Delete a set of client credentials.
+
+**Note**: Deleting a client secret will **destroy all access tokens** previously associated with the client.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Body
+
+        { 
+            "result": "ok" 
+        }
+# Group MRSS Feed
+<a name="mrss"></a>
+
+Media feed of content recently submitted to Fresco News.
+
+# GET /mrss
+
++ Parameters
+    + type (string, optional) `video` or `photo`
+    + user_ids (array[string], optional)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic
+        
++ Response 200 (application/rss+xml)
+# Group User
+<a name="user"></a>
+
+A `user` is any individual signed up with Fresco. The two main categories of users are those who are part of an [outlet](#outlet) and those who signed up as citizen journalists through one of our mobile clients. For most requests, you will find an `outlet` field attached to the user response object.
+
+# GET /user/me
+
+Endpoint for receiving your sessions current user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {User Token}
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+    
+
+# POST /user/create
+
+Endpoint for registering a new user on the Fresco platform. Users can be registered either with or without an outlet. A typical flow after using this endpoint is to request an access token for the newly created user with permission to access the API.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {Client Token}
+
++ Parameters
+    + email (string, required) - User's email
+    + username (string, required) - User's username (no @ at beginning)
+    + password (string, required) - User's plaintext password
+    + full_name (string, optional) - User's full name
+    + bio (string, optional) - User's profile bio
+    + location (string, optional) - User's profile location string
+    + phone (string, optional) - User's phone number (include country code)
+    + avatar (string, optional) - User's avatar URL
+    + twitter_handle (string, optional) - User's twitter handle
+    + social_links (object, optional) - Info for linking social media accounts
+        + facebook
+            + token (string)
+        + twitter 
+            + token (string)
+            + secret (string)
+    + installation (object, optional) - Used for push notifications + linking devices to users
+        + app_version (string)
+        + platform (string)
+        + device_token (string, optional)
+        + timezone (string)
+        + locale_identifier (string)
+    + outlet (object, optional) -  Used to create outlet — if a token is passed, other fields will be ignored
+        + token (string) - If valid token is passed, user will be added to this outlet
+        + title (string) - Title of the new outlet to create
+        + link (string) - Link of the new outlet to create
+    + dob (object, optional) - Info for linking social media accounts
+        + day (string)
+        + month (string)
+        + year (string)
+    + address (object, optional) - User's address for verificaiton
+        + line1 (string)
+        + line2 (string)
+        + city (string)
+        + state (string)
+        + postal_code (string)
+        + country (string)
+    + currency (string, optional) - User's currency code (default usd)
+    + stripe_token (string, optional) - Stripe single-use token for user's card or bank account
+    + account_type `individual, corporation` (string, optional) - Stripe entity type
+    + tax_id (string, optional) - For corporations, used by Stripe
+    + vat_id (string, optional) - For companies in the EU, used by Stripe
+    + pid_token (string, optional) - Stripe personal ID # token
+    + ssn_last4 (string, optional) - Stripe last 4 of SSN,
+    + document_token (string, optional) - Stripe uploaded verification file token
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# GET /user/check
+
+Endpoint for checking the availability of a username and/or email address
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + username: (string, optional) - Case insensitive
+    
+    + email: (string, optional) - Case insensitive
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + available (boolean) - `true` if all fields passed are available
+
+        + fields_unavailable (array) - The fields, if any, whose values are already in use
+    
+# GET /user/suggestions
+
+Endpoint for receiving your sessions current user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + limit: (integer, optional)  - Maximum number of suggestions to fetch
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# GET /user/payment
+
+Provides a list of the user's payments methods
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + payment_ids: (array, optional)  - Array of payment IDs
+
++ Response 200 (application/json)
+
+    + Attributes (array[UserPayment])
+
+# POST /user/payment/create
+
+Create a new payment object for the authorized user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + token (string, required) - Stripe payment method token
+    + active (boolean, optional) - If true, set this as the active payment method on this account
+
++ Response 200 (application/json)
+
+    + Attributes (UserPayment)
+
+# GET /user/{id}/posts
+
+Get a list of posts that the user has submitted.
+
++ Request
+
+    + Headers
+
+        Authorization: Beader {Token}
+
++ Parameters
+
+    + id (string, optional) - The user to get posts for. If not supplied, returns the current users's posts.
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+    + rating (array[integer], optional) - A list of post ratings to filter by.
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# POST /user/update
+
+Endpoint for updating most of a user's fields. Password authentication is required to use this endpoint.
+
++ Request (application/x-www-form-urlencoded)
+
++ Parameters
+
+    + password (string, required) - User's password
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# POST /user/disable
+
+Disables the current user. The user will be deleted after a year. This can be reverted if the user logs in within this time period. If the current user has disabling permissions (is an admin), you can just send `id` of the user to disable.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + username (string, optional) - username of the user (for confirmation)
+    + email (string, optional) - email of the user (for confirmation)
+    + password (string, optional) - password of the user (for confirmation)
+    + user_id (string, optional) - The id of the user to disable (if an admin)
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/block
+
+Blocks a given user. This causes all of the blocked user's content (galleries, comments) to be hidden from the user that is logged in. It also automatically un-follows the blocked user, and un-likes and un-reposts any of the blocked user's content.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to block
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/unblock
+
+Unblocks a given user. The user logged in can now see that user's content
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to block
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# GET /user/blocked
+
+Gets a list of the users blocked by the user currently logged in.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/suspend
+
+Suspends a given user. This prevents the user from submitting content, posting comments, or reposting galleries or stories.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to suspend
+    + suspended_until (string, required) - ISODate. When the user's suspension is over
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/unsuspend
+
+Restores a given user from suspension. They user can now submit content, make comments, and repost content.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to un-suspend
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# GET /user/suspended
+
+Get a list of all the suspended users.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/report
+
+Report a given user for bad behavior.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to report
+    + reason: `spam, abuse, stolen` (string, required) - The reason for the report
+    + message (string, required) - More details about the report
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+# GET /user/{id}/reports
+
+Get the reports that have been filed against a given user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to get reports for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# GET /user/reported
+
+Get all the users who have been reported
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + reasons: `spam, abuse, stolen` (array[string], optional) - Filters reports based on the reason
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/report/skip
+
+Ignores all of the reports that are currently filed against the user. The reports are effectively gone, but still factor in reporting the user's statistics. The reported user's offense count stays the same.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the user to skip all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/report/act
+
+Marks all of the reports that are currently filed against a user as acted upon. The reported user's offense count is increased by one, regardless of how many reports were actually marked as acted upon.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the user to act on all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# Group Outlet
+<a name="outlet"></a>
+
+An `outlet` is a customer entity on Fresco (e.g. a local news station, a media conglomerate) that contains one or more members with one who is the *owner* of the outlet. Members of an outlet are [users](#user) who hold a relationship with the outlet. Outlet members will put out assignments, navigate the archive, and make purchases of user submissions or imported content. These are the resources and API endpoints for working with outlets.
+
+# GET /outlet/{id}
+
+Returns the outlet associated with the Authorization token. Fields may change depending on access level. For example, if you are not a *member* or *owner* of this outlet, the fields `verified`, `owner_id`, `dispatch_enabled` will not be visible.
+
++ Parameters
+
+    + id (string, optional) - Will return the outlet associated to token by default
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Self)
+
+# GET /outlet/stats
+
+Returns various statistics about the given outlets, including purchase and assignment counts. If you are not an admin, you can only retreive info on your outlet.
+
++ Parameters
+
+    + outlet_ids (array[string], optional) - A list of outlets to retreive information from
+    + before (string, optional) - Timestamp, only show statistics from before this time
+    + after (string, optional) - Timestamp, only show statistics from after this time
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Statistics)
+
+# GET /locations/:id?
+
+Used to list outlet locations. By default this will return all outlet locations for an outlet, but can optionally take a single outlet location ID to return one outlet location.
+
++ Parameters
+
+    + id (string, optional) - ID of a specific outlet location
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Locations)
+
+# GET /locations/:id/posts
+
+Used to list posts part of an outlet location.
+
++ Parameters
+
+    + id (string, optional) - ID of a specific outlet location
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# POST /locations/create
+
+Used to create a new outlet location.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + title (string, required) - Title of the outlet location
+    + geo (object, required) - GeoJSON of enclosing points
+    + send_email_default (boolean, optional) - Default setting for medium
+    + send_sms_default (boolean, optional) - Default setting for medium
+    + send_fresco_default (boolean, optional) - Default setting for medium
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Location)
+
+
+# POST /locations/{id}/delete
+
+Used to delete a specific outlet location.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /locations/{id}/update
+
+Used to update a single outlet location's fields.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Location)
+
+
+# POST /locations/{ids}/settings/update
+
+Used to update the notification settings on a outlet location(s).
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + ids (array, required) - Array of outlet location IDs
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Locations)
+
+# POST /export/email
+
+Used to send a statement to the current user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + email (string) - The email the statement was sent to
+        + status (string) - The status of the email
+        + _id (string) - The Mandrill id of the email
+        + reject_reason(string) - The reason the email failed to send (otherwise null)
+
+# Group Post 
+<a name="post"></a>
+
+A `post` is an individual piece of content, either a photo or video. Each post carries with it metadata of the content that it contains, as well as a purchased state to indicate whether or not the piece of content has been purchased by the requesting user's outlet. Videos are delivered via an *m3u8* stream for public viewing, and most images are provided in *JPEG*.
+
+Posts that are photos will carry an `image` field that is publicly readable. Posts that are videos will provide a `stream` field for the post's *m3u8* stream URL **and** an `image` field for the video's thumbnail. Only posts that are purchased will provide an mp4 file for downloading purposes.
+
+All posts contain a `rating` field to indicate whether they have been verified, skipped or not yet rated by Fresco's content team.
+
+## Ratings
+- **`0`** : Not Rated
+- **`1`** : Skipped
+- **`2`** : Verified
+
+# GET /post/{id}
+
+Retrieve a single post by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Post)
+
+# GET /post/list
+
+Lists posts with pagination
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + type: `photo, video` (string, optional) - Type of post to filter
+    + geo (GeoJSON, optional) - GeoJSON to filter by
+    + rating: `0, 1, 2, 3` (string, optional) - Rating of post to filter by, defaul verified
+    
++ Response 200 (application/json)
+    
+    + Attributes (Posts)
+
+# POST /post/complete
+
+Completes a post
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+        
++ Parameters
+
+    + key (string) ... ID of the post
+    + uploadId (string) ... ID of the post
+    + eTags (string) ... ID of the post
+
++ Response 200 (application/json)
+
+    + Attributes (Post)
+
+
+# GET /post/{id}/download
+
+Requests a download link for the raw asset of a post. If the post that is being requested for download hasn't been purchased by the authenticated user, the request 
+will `404`.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+    
+    + Attributes (Post Download)
+
+
++ Response 404
+
+    {
+        status: 404,
+        message: 'Purchase of this post not found'
+    }
+# Group Gallery
+<a name="gallery"></a>
+
+A `gallery` is a collection of [posts](#post). A gallery can be submitted organically by a Fresco user, imported directly from local files or social media, or assembled from a set of existing posts. The `owner` field on a gallery is the user who submitted the gallery; absence of this field indicates that the gallery was imported manually or assembled from existing posts and not uploaded by a Fresco user. Galleries can be part of [assignments](#assignment) and [stories](#story), and can also contain articles.
+
+All galleries contain a `rating` field that remains in sync with a gallery's children posts. A rating of `3` indicates that the gallery is highlighted, which simply means this gallery will appear in Fresco's publicly curated feed.
+
+## Ratings
+- **`0`** : Not Rated
+- **`1`** : Skipped
+- **`2`** : Verified
+- **`3`** : Highlighted
+
+# GET /gallery/{id}
+
+Retrieve a single gallery by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Gallery)
+
+# GET /gallery/highlights
+
+Returns a list of highlighted galleries
+
++ Parameters
+
+    + last (string, optional) - Last gallery ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by,
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by,
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Galleries)
+
+# POST /gallery/create
+
+Creates a new gallery object
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + caption: (string, required) - Caption of the gallery
+    + assignment_id: (string, optional) - Assignment to attach to
+    + outlet_id: (string, optional) - Outlet to attach to
+    + posts - Array of posts to upload as part of the gallery in JSON
+        + lat: (number)
+        + lng: (number)
+        + address: (string)
+        + contentType: 'image/jpg', 'video/mp4' (string)
+        + chunkSize: (number)
+
++ Response 200 (application/json)
+
+    + Attributes (Gallery)
+
+
+# GET /gallery/{id}/likes
+
+Gets the users who have liked a gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to get likes for
+    + last (string, optional) - Last report ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# GET /gallery/{id}/purchases
+
+Get a list of posts that have been purchased from this gallery, as well as information on who purchased them
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# GET /gallery/{id}/reposts
+
+Get the users who have reposted a gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to get reposts for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /gallery/{id}/nsfw
+
+Marks the gallery as not safe for work (NSFW)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + { "result": "ok" }
+
+# POST /gallery/{id}/sfw
+
+Marks the gallery as safe for work (SFW)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + { "result": "ok" }
+
+# POST /gallery/{id}/report
+
+Report a given gallery
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to report
+    + reason: `spam, abuse, stolen, nsfw` (string, required) - The reason for the report
+    + message (string, required) - More details of the report
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+# GET /gallery/{id}/reports
+
+Get the reports that have been issued for a given gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to get reports for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# GET /gallery/reported
+
+Get all the galleries that have been reported
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + reasons: `spam, abuse, stolen, nsfw` (array[string], optional) - Filters reports based on the reason
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# POST /gallery/{id}/report/skip
+
+Ignores all of the reports that are currently filed against a gallery. They are effectively gone, but still factor in reporting the user's statistics. The reported gallery owner's offense count stays the same.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the gallery to skip all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /gallery/{id}/report/act
+
+Marks all of the reports that are currently filed against the gallery as acted upon. The reported gallery owner's offense count is increased by one, regardless of how many reports were actually marked as acted upon.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the gallery to act on all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# Group Story
+<a name="story"></a>
+
+A `story` is a collection of [galleries](#gallery) curated by Fresco's content team. Stories often deal with ongoing events. When requesting a story, thumbnails are passed which are derived from the [posts](#posts) that are part of the galleries within a particular story.
+
+# GET /story/{id}
+
+Retrieve a single story by its unique ID.
+
++ Parameters
+    
+    + id (string, optional) - ID of the story
+
++ Headers
+
+    Authorization: Bearer {token} (optional)
+    
++ Response 200 (application/json)
+
+    + Attributes (Story)
+
+
+# GET /story/{id}/galleries
+
+Lists galleries for a passed story.
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating (number, optional) - Rating to filter by
+
++ Response 200 (application/json)
+
+    + Attributes (Galleries)
+
+# GET /story/{id}/posts
+
+Lists posts inside a passed story.
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating: 0, 1, 2 (number, optional) - Rating to filter by
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# GET /story/recent
+
+Retrieves a list of recent stories
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + created_before (string, optional) - Datetime
+    + created_after (string, optional) - Datetime
+    + updated_before (string, optional) - Datetime
+    + updated_after (string, optional) - Datetime
+    + geo (object, optional) - GeoJSON
+    + geo_where:  (string, optional) - `intersects, contains, contained`
+    + radius (number, optional)
+
++ Headers
+
+    Authorization: Bearer {token} (optional)
+    
++ Response 200 (application/json)
+
+    + Attributes (Stories)
+# Group Assignment
+<a name="assignment"></a>
+
+An `assignment` represents an ongoing event in the Fresco universe. Users can submit breaking news content to assignments when they are within the defined GeoSpace of the assignment. If an assignment is `global` then it is locationless and can receive submissions from anywhere. An assignment's geospatial area can be represented with any GeoJSON format that has enclosing points (center with radius, polygon). All assignments undergo an approval process when submitted for review, and the `rating` field indicates the status of an assignment's approval.
+
+## Ratings
+- **`-1`** : Rejected
+- **`0`** : Not Yet Rated
+- **`1`** : Approved (Live on Fresco Dispatch)
+
+# GET /assignment/{id}
+
+Retrieve a single assignment by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/list
+
+Lists assignments with pagination
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + last (string, optional) - Last assignment ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, ends_at, starts_at` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating: `-1, 0, 1` (string, optional) - Rating of assignments to filter by, verified by default
+
++ Response 200 (application/json)
+
+    + Attributes (Assignments)
+
+# GET /assignment/find
+
+Used to find assignments in a particular geo-space.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + geo (object, required) - GeoJSON to search in
+        + type (string, optional) - Point, Polygon, Multi
+        + coordinates: [73.12312, 40.123123] (array, optional)
+    + radius: `20.23` (number, required) - In miles, passed if the geo object is a single point
+    + where: intersects, contains, contained (string, optional)
+
++ Response (application/json)
+
+    + Attributes (Assignments)
+
+# GET /assignment/posts/check
+
+Used to find all of the assignments that a set of posts can be submitted to
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + geo (object, required) - GeoJSON MultiPoint of post locations
+        + type (string, optional) - Point, Polygon, MultiPoint
+        + coordinates: [73.12312, 40.123123] (array, optional)
+
++ Response (application/json)
+
+    + Attributes (Assignments)
+
+# POST /assignment/create
+
+Creates a new assignment object. An assignment's location can be passed as a single point with a radius or an enclosing polygon.
+
+**Note:** Outlets must be verified with dispatch enabled in order to use this endpoint successfully.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + title (string, required) - Title of the assignment
+    + caption (string, required) - Text description of the assignment
+    + address (string, optional) - Formatted address string of the assignment
+    + location (object, optional) - GeoJSON location object, if absent the assignment will be made global
+    + radius (number, optional) - Radius in miles, used if the location object is a single point
+    + rating (number, optional) - Pre-set rating (requires admin level scope)
+    + starts_at (number, required) - Timestamp of assignment's starting time
+    + ends_at (number, required) - Timestamp of the expiration time for the assignment
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# POST /assignment/{id}/accept
+
+Accepts the assignment as the currently logged in user. The user can only be accept active assignment. This endpoint will give an error if the user tries to accept an assignment when they have already accepted another active one.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment to accept
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# POST /assignment/{id}/unaccept
+
+Unaccepts the assignment as the currently logged in user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment to unaccept
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/accepted
+
+Returns the assignment that the user has accepted. If the user has not accepted any active assignment, then this endpoint will 404.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/{id}/accepted
+
+Returns the list of users who have accepted the assignment. Can only be called by admins.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# Group Purchases
+<a name="purchases"></a>
+
+Resources for working with purchases.
+
+# GET /purchases/list
+
+Returns a list of purchases
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + outlet_ids (array, optional) - Array of outlet IDs to filter by (defaults to outlet making request)
+    + user_ids (array, optional) - Array of user IDs to filter by
+    + last (string, optional) - Last purchase ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Purchases)
+# Group Notifications
+<a name="notification"></a>
+
+Resources for working with notifications
+
+# POST /notifications/user/create
+
+Endpoint for sending push notifications to users, for use on the web platform. Users can
+either be filtered by location, or the caller can provide a list of users to
+send the notification to. If neither is provided, the notification is sent to
+all users (For `user-dispatch-assignment`, it is sent to all users who would
+normally receive the notification).
+
+**Note:** This endpoint will return with the count before the notifications are
+actually sent. This is because sending notifications to a large number of people
+can take some time.
+
+**Note:** Although all content parameters are optional, different notification types
+require various fields be present. If this occurs, the response should have information
+on what fields should be added or changed.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + type (string, required) - Notification slug (e.g. 'user-news-today-in-news')
+    + content (object, required)
+        + title (string, required)
+        + body (string, optional)
+        + gallery_ids (array, optional)
+        + gallery_id (string, optional)
+        + story_id (string, optional)
+        + assignment_id (string, optional)
+    + recipients (object, required)
+        + user_ids (array, optional) - If set, will take precedence over all other recipient options
+        + outlet_ids (array, optional) - Will send to members of an outlet. Takes precedence over geo queries
+        + geo (GeoJSON, optional) - Sends to users that satisfy a geospatial query
+        + where `intersects, contains, contained, within` (string, optional)
+        + radius (number, optional) - miles, must be specified if making a geospatial `within` query
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + count (number) - Number of notifications the api attempted to send
+        
+# POST /notifications/outlet/create
+
+Endpoint for sending push notifications to outlet members, for use on the web platform.
+
+**Note:** Although all content parameters are optional, different notification types
+require various fields be present. If this occurs, the response should have information
+on what fields should be added or changed.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + type (string, required) - Notification slug (e.g. 'user-news-today-in-news')
+    + content (object, required)
+        + title (string, optional)
+        + body (string, optional)
+        + gallery_ids (array, optional)
+    + recipients (object, required)
+        + user_ids (array, optional) - If set, will take precedence over all other recipient options
+        + outlet_ids (array, optional) - Will send to members of an outlet. Takes precedence over geo queries
+        + to_all (boolean, optional) - If true, will send to all active outlets
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + result `ok` (string)
+
+# Group Search
+<a name="search"></a>
+
+Fresco's API supports search across a variety of its models. Currently search is supported for [posts](#post), [galleries](#gallery), [users](#user), [outlets](#outlet), 
+[assignments](#assignment), and articles.
+
+# GET /search
+
+In your query string you can pass search parameters for each respective model as part of the model's query string object. Our root search endpoint supports the search for multiple models in one request allowing you to receive all results in a single response. In addition to a regular search query, most models will offer an auto-complete functonality in which you're able to specify the field on the model you'd like to pattern match against (see provided examples for this functionality). Parameters such as `geo`, `tags`, and `rating` act as direct filters and will only return results that match against the passed values.
+
+**Note** that if you do not pass any query string parameters for a model it will be absent from the response object.
+
+Example query strings:
+
+- Returns posts matching the query Fresco, containing the tags fire, and intersecting at the point/radius geo-space passed
+
+    - `posts[q]=Fresco&posts[tags]=fire&posts[geo][type]=Point&geo[coordinates][0]=0.885456&geo[coordinates][1]=52.320759&geo_where=intersects&radius=3`
+
+- Finds assignments matching the query Fresco, that have an approved rating of 2, and intersecting at the point/radius geo-space passed
+
+    - `assignments[q]=Fresco&assignments[rating]=2&posts[geo][type]=Point&geo[coordinates][0]=0.885456&geo[coordinates][1]=52.320759&geo_where=intersects&radius=3` 
+
+- Finds users whose names match the pattern, "Luke Skywalker"
+
+    - `users[a][full_name]=Luke%20Skywalker` 
+
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    + galleries (object, optional)
+        + q (string, optional) - Query string to find galleries with
+        + rating (number, optional) - Gallery rating to filter by
+        + tags (array, optional) - Array of tags to filter by
+        + created_after (number, optional) 
+        + created_before (number, optional)
+        + updated_before (number, optional) 
+        + updated_after (number, optional) 
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + radius (number, optional) - Radius to search within, in miles
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last assignment ID to paginate by
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + assignments (object, optional)
+        + q (string, optional) - Query string to find assignments with
+        + a (object, optional) - Autocomplete object to find assignments with
+        + rating (number, optional) - 
+        + created_after (number, optional) 
+        + created_before (number, optional)
+        + starts_after (number, optional) 
+        + starts_before (number, optional) 
+        + ends_after (number, optional)
+        + ends_before (number, optional) 
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + radius (number, optional) - Radius to search within, in miles
+        + rating: `0, 1, 2, 3, etc.` (number, optional) - Rating to filter by
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last assignment ID to paginate by
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + posts (object, optional)
+        + q (string, optional) - Query string to find posts with
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last post ID to paginate by
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + radius (GeoJSON, optional) - Radius to search within, in miles
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + post_type: `photo, video` (string, optional) - Type of post to filter by
+        + rating: `0, 1, 2, 3, etc.` (number, optional) - Rating of post to filter by, defaults to verified
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + users (object, optional)
+        + q (string, optional) - Query string to find users with
+        + a (object, optional) - Autocomplete object to find users with
+        + last (string, optional) - Last user ID to paginate by
+        + limit (string, optional) - Limit on results, default 10
+        + created_before (number, required) - Timestamp to filter user's made before a certain date
+        + created_after (number, required) - Timestamp to filter user's made after a certain date
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + outlets (object, optional)
+        + q (string, optional) - Query string to find outlets with
+        + a (object, optional) - Autocomplete object to find users with
+        + last (string, optional) - Last user ID to paginate by
+        + limit (string, optional) - Limit on results, default 10
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+
++ Response 200 (application/json)
+
+    + Attributes (Search Results)
+
+
+# Group Social
+# Group Terms
+
+Resources related to user terms of service.
+
+# GET /terms
+
+Returns the most recent version of the terms of service.
+
++ Response
+
+    + Attributes
+
+        + version: 4 (number) - The version of the terms
+        + terms: (string) - The terms of service text
+
+# POST /terms/accept
+
+Used to indicate that a user has accepted the most recent terms and conditions document
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)

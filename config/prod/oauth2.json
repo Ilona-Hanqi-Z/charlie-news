@@ -1,0 +1,10 @@
+{
+    "OAUTH2": {
+        "Google": {
+            "client_id": "156075935258-fqct4j8fqnj6lccg45mtjilq3mb612rs.apps.googleusercontent.com",
+            "client_secret": "AzldZc6XmxlvJCA-0BPXpBD7",
+            "redirect_uri": "",
+            "scopes": [ "https://www.googleapis.com/auth/plus.me" ]
+        }
+    }
+}

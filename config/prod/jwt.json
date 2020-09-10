@@ -1,0 +1,16 @@
+{
+    "JWT": {
+        "Google": {
+            "type": "service_account",
+            "project_id": "fresco-news-release",
+            "private_key_id": "1fe64051c85620b5c4a87cb56e10ba1457efc029",
+            "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDNdoENKS1B8tBf\nAxBVrzSdTV4OS/BjMv0PBwPnHJ66u5QAGi4w/KeFIoyqy9xLqA1qfPCMryDDPqoO\nr7CpJsZ+RQVQjttjoGXY934bXrXlskmDDjaZjsUwf8yy8CpoD6wiIaLL9DrbAc9E\nS9cfV5ln7c2XFm2Xv4WiSZMChWya35qBt77qLEsVVtlnFhn+xY9d0euGxbSkQiyC\nAt1nRm70P5f03aVB4yQMTRijsIeip4kYe9v2jAZRevfwhfdgqL9zmVGZvzGy2cw7\nolzfOuNmE6V4z3BuJeaz3zv1yT1C0xDYFuTW5n0jBM9zWQAjB3z/adAVEAKbTQ08\ntt0zmTihAgMBAAECggEBAIpU6vZNbucj8B7IFUtbNvVhjZ3aivJ+9doUQxBrOINI\nn5CiD89zi+YbKNIlhyB4+O9lRx+xGUHbAuv4Zdy8+o8xMS7Xv+YHrAq0Nvd+gMEx\nlETkYOZqNWE96jffcu20/5PLSaw/txCU21OELEYx2FscxHqg4xB0JijpmEzuP/zU\nsj7Sludp1fOatDv6scaDzzSEbsKFLdJ/IVTjYUZx9PaUK3giwNl5FkjnP5ySjGLe\nmaGTm9iviJdfn/NtjpcIUyam7Ekw/gga2KdDCLyggzAB+QWYWNPX2u8S8ASQ7rvs\n8xuarspXDT81tVtR6tyctDsUfqfKZ+o/2ecnzp2U9QECgYEA7xAlmQGEktaZ9ZpW\nT4PExD8h7HvjEuZodx3W3ye0qn9ewhkQxMh6HsHXf9Dbi3YySfxYtaUuTPpj37DE\nBWjEuJNAoqeI8seu+pxT+1KSWy59j86PRXapL77y9/T3jtIXg8JcSLRITpBL+QLW\nD48pMPXvIFuWPmoqWLfMlfETAikCgYEA3AT0rSZELPJEEs1hyoUWzqU+41DbEHFC\nvvPeEtiIiMmUE65e5EF4JztLzC6yfk/mxhsb5pa8hLxLzW8jYYu0WKo3BAYGBoS5\nm+532kCxiaE4IqnlBMQx7LAaMr1lck4h4LiKiJynj2GHT1f8TSkASnXOjDFEBRlZ\nc0oHOxdWgbkCgYB2a7k0IdxaIJQDZYB7wvolfGCBlJzXL+tvlghqYnDMRGvcGi6E\nTAqyUbM+TWdzngkrPSV0VW6qEx6GIDn5s/w+sjLCX9sm6GN1IRs4055MLKtmIRw3\nfKAyVpRk36QBy3B6hDzShvuKb1Ay+YSwEGqHJkxd6wBxyoVPjTx6ygBwgQKBgQCr\nu6qHpEC+nHMKAgl8nBlLPqwxniD/Wohwp8UFDMK1kjHkksw6eeehJ6VoQGLOOOu2\nYd6LQ8juClNYjJEfSH6CXooGt/ToDZ0a2y3ty2VIOfCpDddWuxUE3Af25uJSMC49\nS43GSBB51/RXuCOUzpYNiJqpzqJ7IGgzlurB8ttw8QKBgQCxVEtIAR/+40sEXUI7\nipFmi4GfKQVRDznnVLA1QQ06KOVDBazKSZwUjzNgu9MlPGj0R6wyqFw1BbRoOMXR\nmP+pt2fpEVGkCxI+WBdDxILbuDXeNKj2MP5tsgBdQO7ulHMjnFPnmb5otCe6lHdQ\nMgBw39V3tv3/kiYegjv3NxGLBw==\n-----END PRIVATE KEY-----\n",
+            "client_email": "fresco-production@fresco-news-release.iam.gserviceaccount.com",
+            "client_id": "101344044258916723673",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://accounts.google.com/o/oauth2/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fresco-production%40fresco-news-release.iam.gserviceaccount.com"
+        }
+    }
+}

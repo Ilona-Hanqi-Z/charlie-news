@@ -1,0 +1,12 @@
+{
+    "PUSH": {
+        "APNS": {
+            "KEY_FILE": "dev_key.pem",
+            "CERT_FILE": "dev_cert.pem",
+            "BUNDLE_ID": "com.fresconews.Fresco"
+        },
+        "GCM": {
+            "API_KEY": "AIzaSyAKfgUrtyIQfPXHBeh8UKnS3lT7latFSsw"
+        }
+    }
+}

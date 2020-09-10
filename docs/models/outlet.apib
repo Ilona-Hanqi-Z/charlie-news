@@ -1,0 +1,47 @@
+# Data Structures
+
+## Outlet Base (object)
++ object: outlet (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Outlet Preview (Outlet Base)
++ title: Fresco News (string) - Main title of outlet, unique field
++ avatar (string) - Avatar URL
+
+## Outlet (Outlet Base) <!-- public -->
++ bio (string) - Optional bio field for an outlet
++ link (string) - Web link for the outlet
++ owner_id (string) - Owner of the outlet
+
+## Outlet Self (Outlet)
++ dispatch_enabled (boolean)
++ created_at (string) - ISODate
++ verified (boolean) - Verified state of the outlet
++ owner ([User Preview][])
++ goal (number) - For admins, the outlet's goal
+
+## Outlets (array[Outlet])
+
+## Outlet Location Base (object)
++ outlet_id: 7ewm8YP3GL5x (string)
++ user_id: 7ewm8YP3GL5x (string)
++ title: New York (string)
++ location ([GeoJSON Polygon][]) - GeoJSON
++ created_at (number) - Datetime
++ send_email_default (boolean) - Default setting for email medium
++ send_sms_default (boolean) - Default setting for sms medium
++ send_fresco_default (boolean) - Default setting for fresco medium
++ send_push_default (boolean) - Default setting for push medium
+
+## Outlet Location (Outlet Location Base)
+
+## Outlet Locations (array[Outlet Location])
+
+## Outlet Statistic (object)
++ outlet_id: 7ewm8YP3GL5x (string)
++ purchase_count: 0 (number) - Number of purchases this outlet has made
++ photo_count: 0 (number) - Number of photos purchased
++ video_count: 0 (number) - Number of videos purchased
++ assignment_count: 0 (number) - Number of assignments this outlet has been a part of
+
+## Outlet Statistics (array[Outlet Statistic])

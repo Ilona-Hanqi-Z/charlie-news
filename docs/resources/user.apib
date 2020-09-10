@@ -1,0 +1,445 @@
+# Group User
+<a name="user"></a>
+
+A `user` is any individual signed up with Fresco. The two main categories of users are those who are part of an [outlet](#outlet) and those who signed up as citizen journalists through one of our mobile clients. For most requests, you will find an `outlet` field attached to the user response object.
+
+# GET /user/me
+
+Endpoint for receiving your sessions current user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {User Token}
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+    
+
+# POST /user/create
+
+Endpoint for registering a new user on the Fresco platform. Users can be registered either with or without an outlet. A typical flow after using this endpoint is to request an access token for the newly created user with permission to access the API.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {Client Token}
+
++ Parameters
+    + email (string, required) - User's email
+    + username (string, required) - User's username (no @ at beginning)
+    + password (string, required) - User's plaintext password
+    + full_name (string, optional) - User's full name
+    + bio (string, optional) - User's profile bio
+    + location (string, optional) - User's profile location string
+    + phone (string, optional) - User's phone number (include country code)
+    + avatar (string, optional) - User's avatar URL
+    + twitter_handle (string, optional) - User's twitter handle
+    + social_links (object, optional) - Info for linking social media accounts
+        + facebook
+            + token (string)
+        + twitter 
+            + token (string)
+            + secret (string)
+    + installation (object, optional) - Used for push notifications + linking devices to users
+        + app_version (string)
+        + platform (string)
+        + device_token (string, optional)
+        + timezone (string)
+        + locale_identifier (string)
+    + outlet (object, optional) -  Used to create outlet — if a token is passed, other fields will be ignored
+        + token (string) - If valid token is passed, user will be added to this outlet
+        + title (string) - Title of the new outlet to create
+        + link (string) - Link of the new outlet to create
+    + dob (object, optional) - Info for linking social media accounts
+        + day (string)
+        + month (string)
+        + year (string)
+    + address (object, optional) - User's address for verificaiton
+        + line1 (string)
+        + line2 (string)
+        + city (string)
+        + state (string)
+        + postal_code (string)
+        + country (string)
+    + currency (string, optional) - User's currency code (default usd)
+    + stripe_token (string, optional) - Stripe single-use token for user's card or bank account
+    + account_type `individual, corporation` (string, optional) - Stripe entity type
+    + tax_id (string, optional) - For corporations, used by Stripe
+    + vat_id (string, optional) - For companies in the EU, used by Stripe
+    + pid_token (string, optional) - Stripe personal ID # token
+    + ssn_last4 (string, optional) - Stripe last 4 of SSN,
+    + document_token (string, optional) - Stripe uploaded verification file token
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# GET /user/check
+
+Endpoint for checking the availability of a username and/or email address
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + username: (string, optional) - Case insensitive
+    
+    + email: (string, optional) - Case insensitive
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + available (boolean) - `true` if all fields passed are available
+
+        + fields_unavailable (array) - The fields, if any, whose values are already in use
+    
+# GET /user/suggestions
+
+Endpoint for receiving your sessions current user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + limit: (integer, optional)  - Maximum number of suggestions to fetch
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# GET /user/payment
+
+Provides a list of the user's payments methods
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + payment_ids: (array, optional)  - Array of payment IDs
+
++ Response 200 (application/json)
+
+    + Attributes (array[UserPayment])
+
+# POST /user/payment/create
+
+Create a new payment object for the authorized user
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + token (string, required) - Stripe payment method token
+    + active (boolean, optional) - If true, set this as the active payment method on this account
+
++ Response 200 (application/json)
+
+    + Attributes (UserPayment)
+
+# GET /user/{id}/posts
+
+Get a list of posts that the user has submitted.
+
++ Request
+
+    + Headers
+
+        Authorization: Beader {Token}
+
++ Parameters
+
+    + id (string, optional) - The user to get posts for. If not supplied, returns the current users's posts.
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+    + rating (array[integer], optional) - A list of post ratings to filter by.
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# POST /user/update
+
+Endpoint for updating most of a user's fields. Password authentication is required to use this endpoint.
+
++ Request (application/x-www-form-urlencoded)
+
++ Parameters
+
+    + password (string, required) - User's password
+
++ Response 200 (application/json)
+
+    + Attributes (User Self)
+
+# POST /user/disable
+
+Disables the current user. The user will be deleted after a year. This can be reverted if the user logs in within this time period. If the current user has disabling permissions (is an admin), you can just send `id` of the user to disable.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + username (string, optional) - username of the user (for confirmation)
+    + email (string, optional) - email of the user (for confirmation)
+    + password (string, optional) - password of the user (for confirmation)
+    + user_id (string, optional) - The id of the user to disable (if an admin)
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/block
+
+Blocks a given user. This causes all of the blocked user's content (galleries, comments) to be hidden from the user that is logged in. It also automatically un-follows the blocked user, and un-likes and un-reposts any of the blocked user's content.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to block
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/unblock
+
+Unblocks a given user. The user logged in can now see that user's content
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to block
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# GET /user/blocked
+
+Gets a list of the users blocked by the user currently logged in.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/suspend
+
+Suspends a given user. This prevents the user from submitting content, posting comments, or reposting galleries or stories.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to suspend
+    + suspended_until (string, required) - ISODate. When the user's suspension is over
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/unsuspend
+
+Restores a given user from suspension. They user can now submit content, make comments, and repost content.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to un-suspend
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# GET /user/suspended
+
+Get a list of all the suspended users.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/report
+
+Report a given user for bad behavior.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to report
+    + reason: `spam, abuse, stolen` (string, required) - The reason for the report
+    + message (string, required) - More details about the report
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+# GET /user/{id}/reports
+
+Get the reports that have been filed against a given user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to get reports for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# GET /user/reported
+
+Get all the users who have been reported
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + reasons: `spam, abuse, stolen` (array[string], optional) - Filters reports based on the reason
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /user/{id}/report/skip
+
+Ignores all of the reports that are currently filed against the user. The reports are effectively gone, but still factor in reporting the user's statistics. The reported user's offense count stays the same.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the user to skip all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /user/{id}/report/act
+
+Marks all of the reports that are currently filed against a user as acted upon. The reported user's offense count is increased by one, regardless of how many reports were actually marked as acted upon.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the user to act on all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)

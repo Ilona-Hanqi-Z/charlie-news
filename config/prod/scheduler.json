@@ -1,0 +1,39 @@
+{
+    "SCHEDULER": {
+        "endpoint": "ec2-52-6-42-157.compute-1.amazonaws.com:5665",
+        "client_credentials_base64": "cnp4WkZFbjdjZUhLTjVieTpET2RjTVNzMGpPUlVaQTRCdmZKOWM0TkxtcmVqck9MRQ==",
+        "slugs": {
+            "assignment": {
+                "start": "ASSIGNMENT-START",
+                "end": "ASSIGNMENT-END"
+            },
+            "general": {
+                "daily": "GENERAL-DAILY"
+            },
+            "outlet": {
+                "purchase": "OUTLET-PURCHASE"
+            },
+            "post": {
+                "exclusivity": "POST-EXCLUSIVITY"
+            },
+            "story": {
+                "daily": "STORIES-OF-THE-DAY"
+            },
+            "user": {
+                "content_purchased": "USER-CONTENT-PURCHASED",
+                "verification": "USER-VERIFICATION-PAST-DUE",
+                "verification_reminder": "USER-VERIFICATION-REMINDER"
+            }
+        },
+        "paths": {
+            "delayed_notification": "webhook/trigger/notification/delayed",
+            "assignment": {
+                "start": "webhook/trigger/assignment/start",
+                "end": "webhook/trigger/assignment/end"
+            },
+            "general": {
+                "daily": "webhook/trigger/general/daily"
+            }
+        }
+    }
+}

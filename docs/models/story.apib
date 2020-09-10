@@ -1,0 +1,31 @@
+# Data Structures
+
+## Story Base (object)
++ id (string)
++ object: `story` (string)
+
+## Story Preview (Story Base)
++ title (string)
++ caption (string)
++ created_at (string) - ISODate
++ updated_at (string) - ISODate
+
+## Story (Story Preview) <!-- Public -->
++ tags (array[string])
++ curator_id - Last user to edit the story
++ thumbnails ([Thumbnails][])
++ articles ([Articles][])
++ curator ([User Preview][])
++ location ([GeoJSON Polygon][]) - GeoJSON
++ gallery_count (number) - Number of galleries in the story
++ photo_count (number) - Number of photos in the story
++ video_count (number) - Number of videos in the story
++ likes (number) - Number of likes
++ reposts (number) - Number of reposts
++ comments (number) - Number of comments
++ liked (boolean) - Authenticated requests only
++ reposted (boolean) -  Authenticated requests only
+
+## Stories (array[Story])
+
+## Story Previews (array[Story Preview])

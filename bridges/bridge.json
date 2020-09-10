@@ -1,0 +1,89 @@
+[
+	{
+		"version": "2.2.0",
+
+		"models": {
+			"stripMRSSNamespaces": {}
+		},
+
+		"gaps": [
+			{
+				"path": "/v2/mrss",
+				"method": "GET",
+
+				"response": {
+					"body": {
+						"$model": "stripMRSSNamespaces"
+					}
+				}
+			}
+		]
+	},
+	{
+		"version": "2.1.0",
+
+		"models": {
+			"setHighlightRating": {}
+		},
+
+		"gaps": [
+			{
+				"path": "/v2/search",
+
+				"response": {
+					"body": [
+						{
+							"$model": {
+								"galleries.results.$": "setHighlightRating"
+							}
+						},
+						{
+							"$unset": "galleries.results.$.highlighted_at"
+						}
+					]
+				}
+			},
+			{
+				"endpoints": [
+					"GET /v2/gallery/list",
+					"GET /v2/gallery/highlights",
+					"GET /v2/story/*/galleries"
+				],
+				
+				"response": {
+					"body": [
+						{
+							"$model": {
+								"$": "setHighlightRating"
+							}
+						},
+						{
+							"$unset": "$.highlighted_at"
+						}
+					]
+				}
+			},
+			{
+				"endpoints": [
+					"POST /v2/gallery/submit",
+					"POST /v2/gallery/import",
+					"POST /v2/gallery/*/update",
+					"GET /v2/gallery/*"
+				],
+
+				"response": {
+					"body": [
+						{
+							"$model": {
+								".": "setHighlightRating"
+							}
+						},
+						{
+							"$unset": "highlighted_at"
+						}
+					]
+				}
+			}
+		]
+	}
+]

@@ -1,0 +1,13 @@
+{
+    "SERVER": {
+        "ENV": "production",
+        "PORT": 4040,
+        "API_HOST": "api.fresconews.com",
+        "API_PATH": "/v2",
+        "API_ROOT": "https://api.fresconews.com/v2/",
+        "WEB_ROOT": "http://www.fresconews.com/",
+        "OAUTH2": {
+            "EXPIRES_IN_MS": 2592000000
+        }
+    }
+}

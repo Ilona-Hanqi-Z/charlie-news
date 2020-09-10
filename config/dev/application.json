@@ -1,0 +1,38 @@
+{
+    "APPLICATION": {
+        "DELAYS": {
+            "EXCLUSIVITY": 172800000,
+            "HAS_FIRST_LOOK": 1200000,
+            "SOCIAL": 120,
+            "CONTENT": 120,
+
+            "_comment": "7200 seconds = 2 hours",
+            "NEW_USER": 120,
+
+            "ASSIGNMENT": {
+                "REFRESH": 1200000,
+                "FIRSTLOOK": 120,
+                "STANDARD": 1200,
+                "ACCEPTED": 120
+            },
+
+            "AUTO_VERIFY": 900
+        },
+        "TERMS": {
+            "VERSION": 5,
+            "KEY": "static/legal/terms/"
+        },
+        "PRICES": {
+            "VIDEO": 7500,
+            "IMAGE": 5000
+        },
+        "AUTO_FOLLOW": {
+            "_comment": "The config system will create an 'IDS' field by searching for a the users with the given usernames",
+            "USERNAMES": ["tutorials", "john"]
+        },
+        "AUTO_VERIFY": {
+            "_comment": "This is the user who will appear as the curator on auto-verified submissions. The config system will create an 'IDS' field",
+            "USERNAME": "morgan"
+        }
+    }
+}

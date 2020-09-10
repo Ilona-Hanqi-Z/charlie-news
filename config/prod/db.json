@@ -1,0 +1,16 @@
+{
+    "DB": {
+        "client": "pg",
+        "connection": {
+            "host"    : "fresco2-prod-db.crvi5efllyvf.us-east-1.rds.amazonaws.com",
+            "port"    : 6859,
+            "user"    : "frescoproddbuser",
+            "password": "PG8c9CurrKuBQGwVA3rf93SNFJErQyUD",
+            "database": "frescoProd"
+        },
+        "pool": {
+            "min": 2,
+            "max": 20
+        }
+    }
+}

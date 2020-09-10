@@ -1,0 +1,32 @@
+# Data Structures
+
+## Assignment Base (object)
++ object: "assignment" (string)
++ id: 7ewm8YP3GL5x (string)
+
+## Assignment Preview (Assignment Base)
++ title: Waikiki Beach (string)
++ caption: Fresco News is looking for a steady shots and photos of Waikiki Beach during sunrise and sunset. You will be notified if your content is downloaded by one of our news organization partners. (string, required) - Text description of the assignment
++ address: Waikiki, Honolulu, HI, USA (string) -  Formatted address
++ starts_at (string) - Start time (ISODate)
++ ends_at (string) - Expiration time (ISODate)
+
+## Assignment (Assignment Preview) <!-- Assignment Public -->
++ curator_id (string) - User who last edited the assignment
++ curator ([User Preview][])
++ thumbnails ([Thumbnails][])
++ outlets ([array[Outlet Preview]][]) - Outlets part of the assignment
++ location ([GeoJSON Polygon][]) - GeoJSON Polygon
++ radius (number) - Radial buffer of GeoJSON location
++ rating (number)
++ photo_count (number) - # of photos submitted
++ video_count (number) - # of videos submitted
++ accepted_count (number)
++ accepted (boolean)
++ created_at: `2017-01-08T17:42:43.498Z` (string) - ISODate
++ updated_at (string) - ISODate
++ curated_at (string) - Time the assignmned was edited (ISODate)
+
+## Assignments (array[Assignment])
+
+## Assignment Previews (array[Assignment Preview])

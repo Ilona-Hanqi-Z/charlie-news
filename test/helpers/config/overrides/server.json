@@ -1,0 +1,6 @@
+{
+    "SERVER": {
+        "ENV": "test",
+        "API_HOST": "localhost"
+    }
+}

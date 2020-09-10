@@ -1,0 +1,5 @@
+{
+    "STRIPE": {
+        "SECRET_KEY": "sk_live_LTaqebqfmJPyLx6Nm4l4612I"
+    }
+}

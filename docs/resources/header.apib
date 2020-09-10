@@ -1,0 +1,37 @@
+FORMAT: 1A
+HOST: https://api.fresconews.com/v2
+
+# Fresco
+
+The Fresco API provides programmatic access to read and write Fresco data. You can use this API to create a new gallery, read a user profile, retrieve active assignments, and much more. The REST API identifies Fresco applications and users using OAuth; all responses are available in JSON.
+
+## Requests
+
+Both `GET` and `POST` requests are sent with `application/x-www-form-urlencoded` parameters.
+## Errors
+
+Fresco uses traditional HTTP response codes to reflect the success of a specific call. In most cases, response codes in the `2xx` range are considered successful, and response codes in the `4xx` range indicate an error and will provide information to resolve the cause of failure. Response codes in the `5xx` range indicate an error on Fresco servers. Should you find that you're unable to resolve an issue, our API team is available to contact via [api@fresconews.com](mailto:api@fresconews.com)
+
+## Unique Identifiers
+
+All Fresco objects (galleries, posts, assignments, etc.) have unique identifiers that are usually found in the `id` field. Use this ID to find the object you seek or to keep track of the specific entity for later use. 
+
+## Pagination
+
+Most high-level resources have support for pagination allowing you to easily list different types of objects 
+such as [posts](#list-posts), [purchases](#list-posts), and [stories](#list-stories). 
+
+Pagination is utilized via the `last`, `direction`, and `sortBy` parameters. The `sortBy` parameter specifies the field by which to sort objects (e.g. `time_created`, `time_updated`). The `direction` field specifies the ordering. The `last` parameter takes an object's unique ID as the object to paginate from. To achieve a chronological ordering you can sort by a date field such as `time_created` and pass `asc` as the direction.
+
+## GeoJSON
+
+Fresco's API makes heavy use of location data for many of its objects. All of our location data is formatted in standard `GeoJSON` as you'll see in request parameters. Refer to the most recent [GeoJSON](https://tools.ietf.org/html/rfc7946) specifications for help with correct formatting.
+
+There are 4 types of geospatial queries: within, intersects, contained and contains. `within` checks for results withing `radius` meters of the geo query. `intersects` checks for results which intersect the geo query. `contains` checks for results that the geo query contains entirely. `contained` checks for results which completely contain the geo query.
+These options are available wherever you can provide a geospatial query, under the parameter `where` (e.g. ?where=contains&...).
+
+## Tokens and Authentication
+
+Tokens and Client IDs are provided on an outlet or user basis. You can generate a client ID & Secret for your account by visiting your 
+[outlet settings](https://fresconews.com/outlet/settings) page. Endpoints will specify the need for a `basic` or `bearer` 
+token depending on the scope of the respective endpoint. Read more in the [authentication](#authentication) section of the documentation.

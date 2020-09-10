@@ -1,0 +1,27 @@
+# Group Purchases
+<a name="purchases"></a>
+
+Resources for working with purchases.
+
+# GET /purchases/list
+
+Returns a list of purchases
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + outlet_ids (array, optional) - Array of outlet IDs to filter by (defaults to outlet making request)
+    + user_ids (array, optional) - Array of user IDs to filter by
+    + last (string, optional) - Last purchase ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Purchases)

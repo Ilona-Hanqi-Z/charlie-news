@@ -1,0 +1,39 @@
+{
+    "AWS": {
+        "CLOUDFRONT": {
+            "ROOT_URL": "https://cdn.fresconews.com/",
+            "AVATAR_URL": "https://cdn.fresconews.com/images/",
+            "PHOTO_URL": "https://cdn.fresconews.com/images/",
+            "STREAM_URL": "https://cdn.fresconews.com/streams/",
+            "VIDEO_URL": "https://cdn.fresconews.com/videos/",
+            "THUMB_URL": "https://cdn.fresconews.com/images/",
+            "IMAGE_EXTENSION": ".jpg",
+            "STREAM_EXTENSION": ".m3u8",
+            "VIDEO_EXTENSION": ".mp4"
+        },
+        "REDIS": {
+            "URI": "redis://prod-general-001.cls0l1.0001.use1.cache.amazonaws.com:6379"
+        },
+        "S3": {
+            "BUCKET": "com.fresconews.v2.prod",
+            "UPLOAD_DIRECTORY": "raw/"
+        },
+        "SNS": {
+            "ANDROID_PLATFORM_ARN": "arn:aws:sns:us-east-1:285790714321:app/GCM/Fresco-Prod-GCM",
+            "IOS_PLATFORM_ARN": "arn:aws:sns:us-east-1:285790714321:app/APNS/Fresco-Prod-iOS",
+            "NOTIFICATIONS": {
+                "user-news-photos-of-day": "arn:aws:sns:us-east-1:285790714321:user-news-photos-of-day-prod",
+                "user-news-today-in-news": "arn:aws:sns:us-east-1:285790714321:user-news-today-in-news-prod",
+                "user-news-gallery": "arn:aws:sns:us-east-1:285790714321:user-news-gallery-prod",
+                "user-news-story": "arn:aws:sns:us-east-1:285790714321:user-news-story-prod",
+                "user-news-custom-push": "arn:aws:sns:us-east-1:285790714321:user-news-custom-push-prod",
+                "user-dispatch-new-assignment": "arn:aws:sns:us-east-1:285790714321:user-dispatch-new-assignment-prod"
+            }
+        },
+        "TRANSCODER": {
+            "PRESETS": {
+                "MP4": "1479922376909-91q3ai"
+            }
+        }
+    }
+}

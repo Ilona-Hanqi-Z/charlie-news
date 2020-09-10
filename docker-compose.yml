@@ -1,0 +1,25 @@
+version: '2'
+services:
+  api:
+    build: .
+    ports:
+    - "4040:4040"
+    links:
+    - db
+    - rate_limiter
+    environment:
+    - FRESCO_CONFIG=./config/test.json
+  db:
+    image: mdillon/postgis:9.5
+    ports:
+    - "5432:5432"
+    volumes:
+    - fresco_db_volume:/var/lib/postgresql/data
+    environment:
+    - POSTGRES_USER=ubuntu
+    - POSTGRES_DB=circle_test
+  rate_limiter:
+    image: redis:3.0
+volumes:
+  fresco_db_volume:
+    external: true

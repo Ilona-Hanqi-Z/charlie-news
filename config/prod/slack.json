@@ -1,0 +1,15 @@
+{
+    "SLACK": {
+        "WEBHOOK": "https://hooks.slack.com/services/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",
+        "ALERT_NUMBER": "19174859457",
+        "CHANNELS": {
+            "DISPATCH": "dispatch",
+            "DISPATCH_ACCEPTS": "dispatch-accepts",
+            "SUBMISSIONS": "submissions",
+            "PURCHASES": "purchases",
+            "POLICE_SCANNER": "police-scanner",
+            "SUBMISSIONS_FAILED": "submissions-failed",
+            "DOWNLOADS": "downloads"
+        }
+    }
+}

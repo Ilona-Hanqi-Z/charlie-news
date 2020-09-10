@@ -1,0 +1,51 @@
+# Data Structures
+
+## Post Base (object)
++ id (string)
++ object: post (string) - post
+
+## Post (Post Base)
++ parent_id (string) - ID of the parent gallery
++ parent ([Gallery Preview][])
++ owner_id (string) - ID of the post's owner
++ owner  ([User][])
++ curator_id (string) - ID of the post's curator
++ curator ([User Preview][])
++ image (string) - Image URL of the post
++ stream (string) - m3u8 URL of the post, null if not a video
++ license (number)
++ location ([GeoJSON Point][]) - GeoJSON point of the post
++ address (string) - Formatted address
++ width (number) - Width of the image/video
++ height (number) - Height of the image/video
++ duration (number) - Duration of video in seconds
++ status (number) - Transcoding status of the post's media
++ rating: 0, 1, 2 (number)
++ is_nsfw (boolean) - If the post is marked as NSFW
++ purchased (number) - Boolean value of purchased state
++ created_at (string) - Creation timestamp of the post
++ captured_at (string) - Timestamp of when the media was captured
++ updated_at (string) - Timestamp of when the post was last updated
++ purchases ([Post Purchases][]) - A record of the outlets that have purchased this post
+
+## Posts (array[Post])
+
+## Post Purchase
++ id (string) - id of the purchase
++ outlet ([Outlet Preview][])
++ amount (number) - In US cents
+
+## Post Purchases (array[Post Purchase])
+
+## Thumbnail (Post Base)
++ image (string)
++ stream (string)
++ width (number) - Width of the image/video
++ height (number) - Height of the image/video
++ duration (number) - Duration of video in seconds
++ is_nsfw (boolean) - If the post is marked as NSFW
+
+## Thumbnails (array[Thumbnail])
+
+## Post Download (object)
++ result: http://fresconews.com/test.mp4?AccessKeyID=H3SH&Expires=1483745649t (string) - URL of the download link

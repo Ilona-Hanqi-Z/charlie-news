@@ -1,0 +1,8 @@
+CREATE TABLE notifications (
+    id BIGSERIAL PRIMARY KEY,
+    type_id BIGINT NOT NULL,
+    title TEXT NOT NULL,
+    body TEXT DEFAULT '',
+    meta JSONB DEFAULT '{}'::JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

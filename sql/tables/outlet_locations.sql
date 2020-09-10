@@ -1,0 +1,14 @@
+CREATE TABLE outlet_locations (
+    __mongo_id CHARACTER(24) DEFAULT NULL,
+    __mongo_outlet_id CHARACTER(24) DEFAULT NULL,
+
+    id BIGSERIAL PRIMARY KEY,
+    outlet_id BIGINT DEFAULT NULL, -- NOT NULL,     MIGRATION-TODO: SET BACK TO NOT NULL
+    title CHARACTER VARYING(255),
+    location GEOGRAPHY NOT NULL,
+    send_email_default BOOLEAN DEFAULT FALSE,
+    send_sms_default BOOLEAN DEFAULT FALSE,
+    send_fresco_default BOOLEAN DEFAULT FALSE,
+    send_push_default BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

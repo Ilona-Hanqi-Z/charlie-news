@@ -1,0 +1,99 @@
+# Group Post 
+<a name="post"></a>
+
+A `post` is an individual piece of content, either a photo or video. Each post carries with it metadata of the content that it contains, as well as a purchased state to indicate whether or not the piece of content has been purchased by the requesting user's outlet. Videos are delivered via an *m3u8* stream for public viewing, and most images are provided in *JPEG*.
+
+Posts that are photos will carry an `image` field that is publicly readable. Posts that are videos will provide a `stream` field for the post's *m3u8* stream URL **and** an `image` field for the video's thumbnail. Only posts that are purchased will provide an mp4 file for downloading purposes.
+
+All posts contain a `rating` field to indicate whether they have been verified, skipped or not yet rated by Fresco's content team.
+
+## Ratings
+- **`0`** : Not Rated
+- **`1`** : Skipped
+- **`2`** : Verified
+
+# GET /post/{id}
+
+Retrieve a single post by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Post)
+
+# GET /post/list
+
+Lists posts with pagination
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    
+    + last (string, optional) - Last post ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + type: `photo, video` (string, optional) - Type of post to filter
+    + geo (GeoJSON, optional) - GeoJSON to filter by
+    + rating: `0, 1, 2, 3` (string, optional) - Rating of post to filter by, defaul verified
+    
++ Response 200 (application/json)
+    
+    + Attributes (Posts)
+
+# POST /post/complete
+
+Completes a post
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+        
++ Parameters
+
+    + key (string) ... ID of the post
+    + uploadId (string) ... ID of the post
+    + eTags (string) ... ID of the post
+
++ Response 200 (application/json)
+
+    + Attributes (Post)
+
+
+# GET /post/{id}/download
+
+Requests a download link for the raw asset of a post. If the post that is being requested for download hasn't been purchased by the authenticated user, the request 
+will `404`.
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+    
+    + Attributes (Post Download)
+
+
++ Response 404
+
+    {
+        status: 404,
+        message: 'Purchase of this post not found'
+    }

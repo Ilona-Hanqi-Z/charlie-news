@@ -1,0 +1,14 @@
+{
+  "name": "fresco-lambda-wochit-feed",
+  "version": "1.0.0",
+  "description": "Forward new content to Wochit on a scheduled basis.",
+  "main": "index.js",
+  "scripts": { },
+  "author": "Michael Terpak",
+  "license": "Proprietary",
+  "dependencies": {
+    "aws-sdk": "^2.3.7",
+    "bluebird": "^3.5.0",
+    "superagent": "^2.3.0"
+  }
+}

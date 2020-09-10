@@ -1,0 +1,15 @@
+# Data Structures
+
+## Report Base (object)
++ id (string)
++ object: `report`
+
+## Report (Report Base)
++ user_id (string) - The id of the user who made the report
++ user ([User Preview][])
++ reason: `spam, abuse, stolen, graphic` (string) - The reason for the report
++ message (string) - More details about the report
++ created_at (string) - ISODate
++ status (number)
+
+## Reports (array[Report])

@@ -1,0 +1,32 @@
+# Group Terms
+
+Resources related to user terms of service.
+
+# GET /terms
+
+Returns the most recent version of the terms of service.
+
++ Response
+
+    + Attributes
+
+        + version: 4 (number) - The version of the terms
+        + terms: (string) - The terms of service text
+
+# POST /terms/accept
+
+Used to indicate that a user has accepted the most recent terms and conditions document
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)

@@ -1,0 +1,8 @@
+CREATE TABLE user_locations (
+    user_id 		BIGINT PRIMARY KEY,
+    hash 			TEXT NOT NULL DEFAULT MD5(RANDOM()::TEXT),
+    curr_geo 		GEOGRAPHY(Point) NOT NULL,
+    curr_timestamp 	TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    prev_geo 		GEOGRAPHY(Point) DEFAULT NULL,
+    prev_timestamp 	TIMESTAMP WITH TIME ZONE DEFAULT NULL
+);

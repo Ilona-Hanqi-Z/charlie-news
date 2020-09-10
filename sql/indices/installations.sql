@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS installation_user_idx ON installations (user_id);

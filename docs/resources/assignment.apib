@@ -1,0 +1,190 @@
+# Group Assignment
+<a name="assignment"></a>
+
+An `assignment` represents an ongoing event in the Fresco universe. Users can submit breaking news content to assignments when they are within the defined GeoSpace of the assignment. If an assignment is `global` then it is locationless and can receive submissions from anywhere. An assignment's geospatial area can be represented with any GeoJSON format that has enclosing points (center with radius, polygon). All assignments undergo an approval process when submitted for review, and the `rating` field indicates the status of an assignment's approval.
+
+## Ratings
+- **`-1`** : Rejected
+- **`0`** : Not Yet Rated
+- **`1`** : Approved (Live on Fresco Dispatch)
+
+# GET /assignment/{id}
+
+Retrieve a single assignment by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/list
+
+Lists assignments with pagination
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + last (string, optional) - Last assignment ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created, ends_at, starts_at` (string, optional) - Field to sort by
+    + limit (number, optional) - Number of results to return, default 20
+    + rating: `-1, 0, 1` (string, optional) - Rating of assignments to filter by, verified by default
+
++ Response 200 (application/json)
+
+    + Attributes (Assignments)
+
+# GET /assignment/find
+
+Used to find assignments in a particular geo-space.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + geo (object, required) - GeoJSON to search in
+        + type (string, optional) - Point, Polygon, Multi
+        + coordinates: [73.12312, 40.123123] (array, optional)
+    + radius: `20.23` (number, required) - In miles, passed if the geo object is a single point
+    + where: intersects, contains, contained (string, optional)
+
++ Response (application/json)
+
+    + Attributes (Assignments)
+
+# GET /assignment/posts/check
+
+Used to find all of the assignments that a set of posts can be submitted to
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + geo (object, required) - GeoJSON MultiPoint of post locations
+        + type (string, optional) - Point, Polygon, MultiPoint
+        + coordinates: [73.12312, 40.123123] (array, optional)
+
++ Response (application/json)
+
+    + Attributes (Assignments)
+
+# POST /assignment/create
+
+Creates a new assignment object. An assignment's location can be passed as a single point with a radius or an enclosing polygon.
+
+**Note:** Outlets must be verified with dispatch enabled in order to use this endpoint successfully.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + title (string, required) - Title of the assignment
+    + caption (string, required) - Text description of the assignment
+    + address (string, optional) - Formatted address string of the assignment
+    + location (object, optional) - GeoJSON location object, if absent the assignment will be made global
+    + radius (number, optional) - Radius in miles, used if the location object is a single point
+    + rating (number, optional) - Pre-set rating (requires admin level scope)
+    + starts_at (number, required) - Timestamp of assignment's starting time
+    + ends_at (number, required) - Timestamp of the expiration time for the assignment
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# POST /assignment/{id}/accept
+
+Accepts the assignment as the currently logged in user. The user can only be accept active assignment. This endpoint will give an error if the user tries to accept an assignment when they have already accepted another active one.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment to accept
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# POST /assignment/{id}/unaccept
+
+Unaccepts the assignment as the currently logged in user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment to unaccept
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/accepted
+
+Returns the assignment that the user has accepted. If the user has not accepted any active assignment, then this endpoint will 404.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + Attributes (Assignment)
+
+# GET /assignment/{id}/accepted
+
+Returns the list of users who have accepted the assignment. Can only be called by admins.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the assignment
+    + last (string, optional) - Last user ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)

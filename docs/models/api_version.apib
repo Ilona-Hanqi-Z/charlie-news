@@ -1,0 +1,10 @@
+# Data Structures
+
+## Api Version (object)
++ object: `api_version` (string)
++ id (string)
++ version_major (number)
++ version_minor (number)
++ is_lts (boolean) - Flags versions that will be supported long-term
++ deployed_at (string) ISODate
++ deprecated_at (string) - ISODate: If set, support for this API version sill be dropped after the given date, and all clients will use the next recent version.

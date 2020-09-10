@@ -1,0 +1,266 @@
+# Group Gallery
+<a name="gallery"></a>
+
+A `gallery` is a collection of [posts](#post). A gallery can be submitted organically by a Fresco user, imported directly from local files or social media, or assembled from a set of existing posts. The `owner` field on a gallery is the user who submitted the gallery; absence of this field indicates that the gallery was imported manually or assembled from existing posts and not uploaded by a Fresco user. Galleries can be part of [assignments](#assignment) and [stories](#story), and can also contain articles.
+
+All galleries contain a `rating` field that remains in sync with a gallery's children posts. A rating of `3` indicates that the gallery is highlighted, which simply means this gallery will appear in Fresco's publicly curated feed.
+
+## Ratings
+- **`0`** : Not Rated
+- **`1`** : Skipped
+- **`2`** : Verified
+- **`3`** : Highlighted
+
+# GET /gallery/{id}
+
+Retrieve a single gallery by its unique ID.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+
+    + id (string, optional) - Can be pased in URL optionally
+
++ Response 200 (application/json)
+
+    + Attributes (Gallery)
+
+# GET /gallery/highlights
+
+Returns a list of highlighted galleries
+
++ Parameters
+
+    + last (string, optional) - Last gallery ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by,
+    + sortBy: `time_created, time_captured` (string, optional) - Field to sort by,
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Galleries)
+
+# POST /gallery/create
+
+Creates a new gallery object
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + caption: (string, required) - Caption of the gallery
+    + assignment_id: (string, optional) - Assignment to attach to
+    + outlet_id: (string, optional) - Outlet to attach to
+    + posts - Array of posts to upload as part of the gallery in JSON
+        + lat: (number)
+        + lng: (number)
+        + address: (string)
+        + contentType: 'image/jpg', 'video/mp4' (string)
+        + chunkSize: (number)
+
++ Response 200 (application/json)
+
+    + Attributes (Gallery)
+
+
+# GET /gallery/{id}/likes
+
+Gets the users who have liked a gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to get likes for
+    + last (string, optional) - Last report ID to paginate from
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# GET /gallery/{id}/purchases
+
+Get a list of posts that have been purchased from this gallery, as well as information on who purchased them
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# GET /gallery/{id}/reposts
+
+Get the users who have reposted a gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to get reposts for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Users)
+
+# POST /gallery/{id}/nsfw
+
+Marks the gallery as not safe for work (NSFW)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + { "result": "ok" }
+
+# POST /gallery/{id}/sfw
+
+Marks the gallery as safe for work (SFW)
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + { "result": "ok" }
+
+# POST /gallery/{id}/report
+
+Report a given gallery
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the gallery to report
+    + reason: `spam, abuse, stolen, nsfw` (string, required) - The reason for the report
+    + message (string, required) - More details of the report
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+# GET /gallery/{id}/reports
+
+Get the reports that have been issued for a given gallery
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - id of the user to get reports for
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# GET /gallery/reported
+
+Get all the galleries that have been reported
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + reasons: `spam, abuse, stolen, nsfw` (array[string], optional) - Filters reports based on the reason
+    + last (string, optional) - Last report ID to paginate by
+    + direction: `asc, desc` (string, optional) - Direction to sort by
+    + sortBy: `time_created` (string, optional) - Field to sort by
+    + limit (integer, optional) - Number of results to return
+
++ Response 200 (application/json)
+
+    + Attributes (Reports)
+
+# POST /gallery/{id}/report/skip
+
+Ignores all of the reports that are currently filed against a gallery. They are effectively gone, but still factor in reporting the user's statistics. The reported gallery owner's offense count stays the same.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the gallery to skip all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /gallery/{id}/report/act
+
+Marks all of the reports that are currently filed against the gallery as acted upon. The reported gallery owner's offense count is increased by one, regardless of how many reports were actually marked as acted upon.
+
++ Request
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + id (string, required) - Id of the gallery to act on all of the reports for
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)

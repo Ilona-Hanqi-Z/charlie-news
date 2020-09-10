@@ -1,0 +1,99 @@
+# Group Search
+<a name="search"></a>
+
+Fresco's API supports search across a variety of its models. Currently search is supported for [posts](#post), [galleries](#gallery), [users](#user), [outlets](#outlet), 
+[assignments](#assignment), and articles.
+
+# GET /search
+
+In your query string you can pass search parameters for each respective model as part of the model's query string object. Our root search endpoint supports the search for multiple models in one request allowing you to receive all results in a single response. In addition to a regular search query, most models will offer an auto-complete functonality in which you're able to specify the field on the model you'd like to pattern match against (see provided examples for this functionality). Parameters such as `geo`, `tags`, and `rating` act as direct filters and will only return results that match against the passed values.
+
+**Note** that if you do not pass any query string parameters for a model it will be absent from the response object.
+
+Example query strings:
+
+- Returns posts matching the query Fresco, containing the tags fire, and intersecting at the point/radius geo-space passed
+
+    - `posts[q]=Fresco&posts[tags]=fire&posts[geo][type]=Point&geo[coordinates][0]=0.885456&geo[coordinates][1]=52.320759&geo_where=intersects&radius=3`
+
+- Finds assignments matching the query Fresco, that have an approved rating of 2, and intersecting at the point/radius geo-space passed
+
+    - `assignments[q]=Fresco&assignments[rating]=2&posts[geo][type]=Point&geo[coordinates][0]=0.885456&geo[coordinates][1]=52.320759&geo_where=intersects&radius=3` 
+
+- Finds users whose names match the pattern, "Luke Skywalker"
+
+    - `users[a][full_name]=Luke%20Skywalker` 
+
+
++ Request (application/x-www-form-urlencoded)
+    
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Parameters
+    + galleries (object, optional)
+        + q (string, optional) - Query string to find galleries with
+        + rating (number, optional) - Gallery rating to filter by
+        + tags (array, optional) - Array of tags to filter by
+        + created_after (number, optional) 
+        + created_before (number, optional)
+        + updated_before (number, optional) 
+        + updated_after (number, optional) 
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + radius (number, optional) - Radius to search within, in miles
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last assignment ID to paginate by
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + assignments (object, optional)
+        + q (string, optional) - Query string to find assignments with
+        + a (object, optional) - Autocomplete object to find assignments with
+        + rating (number, optional) - 
+        + created_after (number, optional) 
+        + created_before (number, optional)
+        + starts_after (number, optional) 
+        + starts_before (number, optional) 
+        + ends_after (number, optional)
+        + ends_before (number, optional) 
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + radius (number, optional) - Radius to search within, in miles
+        + rating: `0, 1, 2, 3, etc.` (number, optional) - Rating to filter by
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last assignment ID to paginate by
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + posts (object, optional)
+        + q (string, optional) - Query string to find posts with
+        + limit (number, optional) - Number of results to return, default 20
+        + last (string, optional) - Last post ID to paginate by
+        + geo (GeoJSON, optional) - GeoJSON object to filter by
+        + radius (GeoJSON, optional) - Radius to search within, in miles
+        + geo_where: `intersects, contains, contained` (string, optional) - Geo-spatial condition to query by, default `intersects`
+        + post_type: `photo, video` (string, optional) - Type of post to filter by
+        + rating: `0, 1, 2, 3, etc.` (number, optional) - Rating of post to filter by, defaults to verified
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + users (object, optional)
+        + q (string, optional) - Query string to find users with
+        + a (object, optional) - Autocomplete object to find users with
+        + last (string, optional) - Last user ID to paginate by
+        + limit (string, optional) - Limit on results, default 10
+        + created_before (number, required) - Timestamp to filter user's made before a certain date
+        + created_after (number, required) - Timestamp to filter user's made after a certain date
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+    + outlets (object, optional)
+        + q (string, optional) - Query string to find outlets with
+        + a (object, optional) - Autocomplete object to find users with
+        + last (string, optional) - Last user ID to paginate by
+        + limit (string, optional) - Limit on results, default 10
+        + direction: `asc, desc` (string, optional) - Direction to sort by
+        + sortBy: `time_created, time_captured` (string, optional) - Field to sort by
+
++ Response 200 (application/json)
+
+    + Attributes (Search Results)
+

@@ -1,0 +1,81 @@
+# Group Notifications
+<a name="notification"></a>
+
+Resources for working with notifications
+
+# POST /notifications/user/create
+
+Endpoint for sending push notifications to users, for use on the web platform. Users can
+either be filtered by location, or the caller can provide a list of users to
+send the notification to. If neither is provided, the notification is sent to
+all users (For `user-dispatch-assignment`, it is sent to all users who would
+normally receive the notification).
+
+**Note:** This endpoint will return with the count before the notifications are
+actually sent. This is because sending notifications to a large number of people
+can take some time.
+
+**Note:** Although all content parameters are optional, different notification types
+require various fields be present. If this occurs, the response should have information
+on what fields should be added or changed.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + type (string, required) - Notification slug (e.g. 'user-news-today-in-news')
+    + content (object, required)
+        + title (string, required)
+        + body (string, optional)
+        + gallery_ids (array, optional)
+        + gallery_id (string, optional)
+        + story_id (string, optional)
+        + assignment_id (string, optional)
+    + recipients (object, required)
+        + user_ids (array, optional) - If set, will take precedence over all other recipient options
+        + outlet_ids (array, optional) - Will send to members of an outlet. Takes precedence over geo queries
+        + geo (GeoJSON, optional) - Sends to users that satisfy a geospatial query
+        + where `intersects, contains, contained, within` (string, optional)
+        + radius (number, optional) - miles, must be specified if making a geospatial `within` query
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + count (number) - Number of notifications the api attempted to send
+        
+# POST /notifications/outlet/create
+
+Endpoint for sending push notifications to outlet members, for use on the web platform.
+
+**Note:** Although all content parameters are optional, different notification types
+require various fields be present. If this occurs, the response should have information
+on what fields should be added or changed.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + type (string, required) - Notification slug (e.g. 'user-news-today-in-news')
+    + content (object, required)
+        + title (string, optional)
+        + body (string, optional)
+        + gallery_ids (array, optional)
+    + recipients (object, required)
+        + user_ids (array, optional) - If set, will take precedence over all other recipient options
+        + outlet_ids (array, optional) - Will send to members of an outlet. Takes precedence over geo queries
+        + to_all (boolean, optional) - If true, will send to all active outlets
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + result `ok` (string)

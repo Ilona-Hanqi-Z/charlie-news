@@ -1,0 +1,20 @@
+# Group MRSS Feed
+<a name="mrss"></a>
+
+Media feed of content recently submitted to Fresco News. By default links to the videos will be returned as an HLS playlist (.m3u8). This can be changed with the video_format parameter.
+
+# GET /mrss
+
++ Parameters
+    + type (string, optional) - `video` or `photo`
+    + video_format (string, optional) - `mp4` or `m3u8`
+    + user_ids (array[string], optional)
+    + tags (array[string], optional) - Only show posts with the given tags
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Basic
+
++ Response 200 (application/rss+xml)

@@ -1,0 +1,173 @@
+# Group Outlet
+<a name="outlet"></a>
+
+An `outlet` is a customer entity on Fresco (e.g. a local news station, a media conglomerate) that contains one or more members with one who is the *owner* of the outlet. Members of an outlet are [users](#user) who hold a relationship with the outlet. Outlet members will put out assignments, navigate the archive, and make purchases of user submissions or imported content. These are the resources and API endpoints for working with outlets.
+
+# GET /outlet/{id}
+
+Returns the outlet associated with the Authorization token. Fields may change depending on access level. For example, if you are not a *member* or *owner* of this outlet, the fields `verified`, `owner_id`, `dispatch_enabled` will not be visible.
+
++ Parameters
+
+    + id (string, optional) - Will return the outlet associated to token by default
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Self)
+
+# GET /outlet/stats
+
+Returns various statistics about the given outlets, including purchase and assignment counts. If you are not an admin, you can only retreive info on your outlet.
+
++ Parameters
+
+    + outlet_ids (array[string], optional) - A list of outlets to retreive information from
+    + before (string, optional) - Timestamp, only show statistics from before this time
+    + after (string, optional) - Timestamp, only show statistics from after this time
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Statistics)
+
+# GET /locations/:id?
+
+Used to list outlet locations. By default this will return all outlet locations for an outlet, but can optionally take a single outlet location ID to return one outlet location.
+
++ Parameters
+
+    + id (string, optional) - ID of a specific outlet location
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Locations)
+
+# GET /locations/:id/posts
+
+Used to list posts part of an outlet location.
+
++ Parameters
+
+    + id (string, optional) - ID of a specific outlet location
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {token}
+
++ Response 200 (application/json)
+
+    + Attributes (Posts)
+
+# POST /locations/create
+
+Used to create a new outlet location.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + title (string, required) - Title of the outlet location
+    + geo (object, required) - GeoJSON of enclosing points
+    + send_email_default (boolean, optional) - Default setting for medium
+    + send_sms_default (boolean, optional) - Default setting for medium
+    + send_fresco_default (boolean, optional) - Default setting for medium
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Location)
+
+
+# POST /locations/{id}/delete
+
+Used to delete a specific outlet location.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + success: ok (string)
+
+# POST /locations/{id}/update
+
+Used to update a single outlet location's fields.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Location)
+
+
+# POST /locations/{ids}/settings/update
+
+Used to update the notification settings on a outlet location(s).
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Parameters
+
+    + ids (array, required) - Array of outlet location IDs
+
++ Response 200 (application/json)
+
+    + Attributes (Outlet Locations)
+
+# POST /export/email
+
+Used to send a statement to the current user.
+
++ Request (application/x-www-form-urlencoded)
+
+    + Headers
+
+        Authorization: Bearer {Token}
+
++ Response 200 (application/json)
+
+    + Attributes
+
+        + email (string) - The email the statement was sent to
+        + status (string) - The status of the email
+        + _id (string) - The Mandrill id of the email
+        + reject_reason(string) - The reason the email failed to send (otherwise null)

@@ -1,0 +1,6 @@
+{
+    "PAPERTRAIL": {
+        "host": "logs4.papertrailapp.com",
+        "port": 23574
+    }
+}

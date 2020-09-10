@@ -1,0 +1,74 @@
+# Data Structures
+
+## User Base (object)
++ object: user - Object type
++ id: 7ewm8YP3GL5x (string) - Unique ID
+
+## User Preview (User Base)
++ username: lskywalker3 (string)
++ full_name: Luke Skywalker (string)
++ avatar: http://goo.gl/WQyk8z (string) - Avatar URL
+
+## User (User Base) <!-- `public` -->
++ location: Alderaan (string) - User's location by string
++ bio: Jedi Master (string) - User's bio
++ twitter_handle: @luke - Twitter handle
++ created_at (string) - ISODAte
++ photo_count (number) - Number of photos submitted
++ video_count (number) - Number of video submitted
++ submission_count (number) - Number of total submissions
++ following_count (number) - Number of people following
++ followed_count (number) - Number of followers
++ following (boolean) Only provided when authenticated
++ blocked: false (boolean) - If true, the returned user has blocked the logged in user
++ blocking: false (boolean) - If true, the returned user has been blocked by the logged in user
+
+## User Self (User)
++ email: luke@star.net (string) - email
++ phone (string)
++ radius (number)
++ charges_enabled (boolean) - Can user receive payments from outlets?
++ transfers_enabled (boolean) - Can user transfer money to active payment method?
++ suspended_until (string) - ISODAte: If set, user is suspended until listed time
++ offense_count (number) - Number of offenses levied against this user
++ permissions (array[string]) - User's permitted actions
++ outlet ([Outlet Preview][])
++ terms
+    + valid (boolean)
+    + version (number)
++ social_links
+    + facebook
+        + account_id (string)
+    + twitter
+        + account_id (string)
++ identity
+    + first_name (string)
+    + last_name (string)
+    + address_line1 (string)
+    + address_line2 (string)
+    + address_city (string)
+    + address_state (string)
+    + address_zip (string)
+    + dob_day (number)
+    + dob_month (number)
+    + dob_year (number)
+    + pid_last4_provided (boolean)
+    + pid_provided (boolean)
+    + document_provided (boolean)
+    + fields_needed (array[string])
+    + due_by (string) - ISODate
+    + disabled_reason (string)
+    + updated_at (string) - ISODate
+
+## Users (array[User])
+
+## UserPayment (object)
++ id (string)
++ user_id (string)
++ stripe_id (string)
++ type (string)
++ brand (string)
++ last4 (string)
++ active (boolean)
++ valid (boolean)
++ created_at (string)
