@@ -25,8 +25,9 @@ config
 
 // NOTE init.js must be required AFTER the config loads
 function init() {
-    let func = require('./init');
-    func().then(start).catch(console.error);
+    //let func = require('./init');
+    //func().then(start).catch(console.error);
+    start();
 }
 
 function start() {

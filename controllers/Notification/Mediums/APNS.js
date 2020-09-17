@@ -10,7 +10,7 @@ const winston = require('../../../lib/winston');
 
 const APNSProvider = new apn.Provider({
     key:  path.join(__dirname, '../../../keys/' + config.PUSH.APNS.KEY_FILE),
-    cert:  path.join(__dirname, '../../../keys/' + config.PUSH.APNS.CERT_FILE),
+    cert: path.join(__dirname, '../../../keys/' + config.PUSH.APNS.CERT_FILE),
     production: config.SERVER.ENV === 'production'
 });
 

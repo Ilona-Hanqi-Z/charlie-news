@@ -1,6 +1,6 @@
 {
     "SCHEDULER": {
-        "endpoint": "ec2-52-205-251-130.compute-1.amazonaws.com:5665",
+        "endpoint": "127.0.0.1:6379",
         "client_credentials_base64": "cnp4WkZFbjdjZUhLTjVieTpGOFJmNFJGcnczV2U4alp4OFNOUnFMQUhGaDl2cEw4cA==",
         "slugs": {
             "assignment": {

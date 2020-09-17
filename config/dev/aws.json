@@ -12,7 +12,7 @@
             "VIDEO_EXTENSION": ".mp4"
         },
         "REDIS": {
-            "URI": "redis://ec2-52-205-251-130.compute-1.amazonaws.com:6379"
+            "URI": "redis://localhost:6379"
         },
         "S3": {
             "BUCKET": "com.fresconews.dev",
