@@ -15,7 +15,7 @@ INSERT INTO roles (entity, tag, name, scopes) VALUES
     ('client', 'scheduler', 'Scheduler Server Keys', '{scheduler::}'),
     ('client', 'aws', 'AWS Keys', '{aws::}'),
     ('client', 'zoho', 'ZOHO Keys', '{zoho::}'),
-    ('client', 'mrss', 'MRSS Keys', '{mrss::}');
+    ('client', 'mrss', 'MRSS Keys', '{mrss::}'),
 
     ('token', 'read', 'Read Only Token', '{::get}'),
     ('token', 'write', 'Read and Write Token', '{::}');
