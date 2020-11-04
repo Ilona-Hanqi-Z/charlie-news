@@ -11,9 +11,10 @@ const path = require('path');
 const redisClient = require('./lib/redis').client;
 const routes = require('./routes');
 const winston = require('./lib/winston');
+var cors = require('cors')
 
 const app = express();
-
+app.use(cors());
 app.set('env', config.SERVER.ENV);
 app.set('etag', false);
 
@@ -23,6 +24,7 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(middleware.rateLimiter);
 app.use(middleware.winston);
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 // // TODO TEMP, REMOVE THIS AFTER CLIENTLESS REQUESTS ARE PHASED OUT
 app.use((req, res, next) => {

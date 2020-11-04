@@ -6,6 +6,7 @@ const path = require('path');
 const AutoFollowProvider = require('./AutoFollowProvider');
 const AutoVerifyProvider = require('./AutoVerifyProvider');
 
+
 var config = {
     /**
      * Build the config file, taking into account the current environment
